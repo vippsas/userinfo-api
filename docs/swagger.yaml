@@ -4,7 +4,7 @@ info:
     Vipps offers the possibility for merchants to ask for the user's profile information as part of the payment flow.
     This follows the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo) for the UserInfo endpoint.
     For details, see the [Vipps Userinfo API Guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/userinfo-api).
-  version: 2.0.1
+  version: 2.0.2
   title: Vipps Userinfo API
 servers:
   - url: https://api.vipps.no
@@ -46,7 +46,7 @@ paths:
           description: >-
             The Merchant Serial Number (MSN) is a unique id for the sale unit
             that this payment is made for.
-            This is a required parameter if you are a Vipps eCom partner
+            This is a required parameter if you are a Vipps partner
             making payments on behalf of a merchant.
             The partner must use the merchant's MSN (not the partner's MSN).
             This parameter is optional, and recommended, for regular Vipps
@@ -92,8 +92,6 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/UserinfoError'
-
-
 components:
   schemas:
     Address:
@@ -233,17 +231,25 @@ components:
           example: "Robert Levins gate 5"
     UserinfoError:
       type: object
+      description: |-
+        The standard Error object.
+        See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/errors
       properties:
         type:
           type: string
+          example: https://example.com/validation-error
         title:
           type: string
+          example: Your request parameters didn't validate.
         status:
           type: string
+          example: TODO
         detail:
           type: string
+          example: The request body contains one or more errors
         instance:
           type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
         extraInfo:
           type: object
           additionalProperties:
