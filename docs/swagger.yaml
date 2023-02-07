@@ -3,7 +3,6 @@ info:
   description: |
     Vipps offers the possibility for merchants to ask for the user's profile information as part of the payment flow.
     This follows the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo) for the UserInfo endpoint.
-    For details, see the [Vipps Userinfo API Guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/userinfo-api).
   version: 2.0.2
   title: Vipps Userinfo API
 servers:
@@ -101,14 +100,15 @@ components:
         - city
         - country
         - postCode
+      description: This version of the API only supports Norwegian addresses.
       properties:
         addressLine1:
           type: string
-          description: Address Line 1
+          description: Address line 1
           example: Robert Levins gate 5
         addressLine2:
           type: string
-          description: Address Line 2
+          description: Address line 2
           example: 'Att: Rune Garborg'
         city:
           type: string
@@ -122,13 +122,14 @@ components:
             - Norway
         postCode:
           type: string
-          description: Post Code
+          description: Post code
           example: '0154'
     Userinfo:
       type: object
       properties:
         accounts:
           description: 'Contains an array with the user''s bank accounts registered in the Vipps app'
+          deprecated: true
           type: array
           items:
             $ref: '#/components/schemas/UserinfoAccountInfo'
