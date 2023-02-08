@@ -12,4 +12,4 @@ END_METADATA -->
 
 This is to be provided soon.
 
-See [Common topics: userinfo](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/userinfo).
+See [Common topics: Userinfo](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/userinfo).
