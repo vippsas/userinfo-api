@@ -70,7 +70,7 @@ This is a high-level description, common for the APIs that support Userinfo:
 4. The user consents to the information sharing and completes the payment in Vipps.
 5. Make the API call to get the details of the payment, and get the `sub` which identifies the user.
 6. Retrieve the user's information based on the `sub`:
-   [`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#tag/Vipps-Userinfo-API/operation/getUserinfogetUserinfo).
+   [`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo).
 
 For specific examples, see:
 
@@ -134,7 +134,7 @@ transaction and the fetching of the profile data.
 This endpoint returns the payload with the information that the user has consented to share.
 
 Call
-[`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#tag/Vipps-Userinfo-API/operation/getUserinfogetUserinfo)
+[`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo)
 with the `sub` that was retrieved earlier. See below on how to construct the call.
 
 ### Request
