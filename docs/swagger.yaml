@@ -13,8 +13,6 @@ servers:
 paths:
   '/vipps-userinfo-api/userinfo/{sub}':
     get:
-      tags:
-        - Vipps Userinfo API
       summary: Get Userinfo
       description: >-
         This endpoint returns the payload with the information that the user has consented to share.
