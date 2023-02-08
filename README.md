@@ -80,7 +80,7 @@ For specific examples, see:
 is made within (milli)seconds of the payment approval in the app, it may not be
 available. If that happens, simply make another request.
 See
-[Polling guidelines](polling-guidelines.md)
+[Polling guidelines](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/polling-guidelines)
 for more recommendations.
 
 ### Example calls
@@ -132,7 +132,8 @@ transaction and the fetching of the profile data.
 
 This endpoint returns the payload with the information that the user has consented to share.
 
-Call [`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#tag/Vipps-Userinfo-API/operation/getUserinfogetUserinfo)
+Call
+[`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#tag/Vipps-Userinfo-API/operation/getUserinfogetUserinfo)
 with the `sub` that was retrieved earlier. See below on how to construct the call.
 
 ### Request
@@ -143,7 +144,8 @@ with the `sub` that was retrieved earlier. See below on how to construct the cal
 |:--------------|:------------------------|
 | Authorization | "Bearer {Access Token}" |
 
-The access token is received on a successful request to the token endpoint described in [Authentication](./authentication.md).
+The access token is received on a successful request to the token endpoint described in the
+[Access token API guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/access-token-api).
 
 **Example response from a successful call:**
 
