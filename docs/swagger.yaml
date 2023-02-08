@@ -3,8 +3,7 @@ info:
   description: |
     Vipps offers the possibility for merchants to ask for the user's profile information as part of the payment flow.
     This follows the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo) for the UserInfo endpoint.
-    For details, see the [Vipps Userinfo API Guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/userinfo-api).
-  version: 2.0.1
+  version: 2.0.2
   title: Vipps Userinfo API
 servers:
   - url: https://api.vipps.no
@@ -46,7 +45,7 @@ paths:
           description: >-
             The Merchant Serial Number (MSN) is a unique id for the sale unit
             that this payment is made for.
-            This is a required parameter if you are a Vipps eCom partner
+            This is a required parameter if you are a Vipps partner
             making payments on behalf of a merchant.
             The partner must use the merchant's MSN (not the partner's MSN).
             This parameter is optional, and recommended, for regular Vipps
@@ -92,8 +91,6 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/UserinfoError'
-
-
 components:
   schemas:
     Address:
@@ -103,14 +100,15 @@ components:
         - city
         - country
         - postCode
+      description: This version of the API only supports Norwegian addresses.
       properties:
         addressLine1:
           type: string
-          description: Address Line 1
+          description: Address line 1
           example: Robert Levins gate 5
         addressLine2:
           type: string
-          description: Address Line 2
+          description: Address line 2
           example: 'Att: Rune Garborg'
         city:
           type: string
@@ -124,13 +122,14 @@ components:
             - Norway
         postCode:
           type: string
-          description: Post Code
+          description: Post code
           example: '0154'
     Userinfo:
       type: object
       properties:
         accounts:
           description: 'Contains an array with the user''s bank accounts registered in the Vipps app'
+          deprecated: true
           type: array
           items:
             $ref: '#/components/schemas/UserinfoAccountInfo'
@@ -187,6 +186,8 @@ components:
           example: 'c06c4afe-d9e1-4c5d-939a-177d752a0944'
     UserinfoAccountInfo:
       type: object
+      description: Bank account
+      deprecated: true
       properties:
         account_name:
           description: "User''s defined name for account"
@@ -233,17 +234,25 @@ components:
           example: "Robert Levins gate 5"
     UserinfoError:
       type: object
+      description: |-
+        The standard Error object.
+        See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/errors
       properties:
         type:
           type: string
+          example: https://example.com/validation-error
         title:
           type: string
+          example: Your request parameters didn't validate.
         status:
           type: string
+          example: TODO
         detail:
           type: string
+          example: The request body contains one or more errors
         instance:
           type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
         extraInfo:
           type: object
           additionalProperties:
