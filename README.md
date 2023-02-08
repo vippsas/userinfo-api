@@ -27,12 +27,13 @@ in addition to profile information, they can also use Vipps to log the user in w
 
 Example of the userInfo flow:
 
-![User info flow](images/userinfo-flow.png)
+![Userinfo flow](images/userinfo-flow.png)
 
-This is applicable to:
+The userinfo flow is used by several APIs, including:
 
 * [Checkout API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/checkout-api)
 * [eCom API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/ecom-api)
+* [ePayment API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/epayment-api)
 * [Login API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api)
 * [Recurring API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/recurring-api)
 
