@@ -200,7 +200,29 @@ The access token is received on a successful request to the token endpoint descr
 
 Userinfo sequence:
 
-![Userinfo sequence](images/userinfo-direct.png)
+``` mermaid
+sequenceDiagram
+    actor User
+    actor UserVippsApp
+    participant Merchant
+    participant Vipps
+
+    User ->> Merchant: Initiate transaction
+    Merchant ->> Vipps: Initiate transaction
+    Note right of Merchant: Example scopes: name, address, email
+    Vipps -->> Merchant : Session link
+    Merchant ->> UserVippsApp : Trigger transaction session
+    UserVippsApp ->> Vipps : Approve payment and detail sharing
+    Vipps ->> Vipps : Save Consent and generate sub
+    Vipps ->> Vipps : Perform Payment
+    Vipps -->> UserVippsApp : Response
+    UserVippsApp ->> Merchant : Response
+    Merchant ->> Vipps : Retrieve details
+    Vipps -->> Merchant : Return details, sub included
+    Merchant ->> Vipps : Get on userinfo/{sub}
+    Vipps -->> Merchant : Return userinfo
+    Merchant ->> Merchant : Handle session result
+```
 
 ## Consent
 
