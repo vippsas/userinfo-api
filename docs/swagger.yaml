@@ -41,7 +41,7 @@ paths:
         - in: header
           name: Merchant-Serial-Number
           description: >-
-            The Merchant Serial Number (MSN) is a unique id for the sale unit
+            The Merchant Serial Number (MSN) is a unique id for the sales unit
             that this payment is made for.
             This is a required parameter if you are a Vipps partner
             making payments on behalf of a merchant.
