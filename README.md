@@ -33,11 +33,32 @@ information from the [Get Userinfo](https://vippsas.github.io/vipps-developer-do
 A user's consent to share information with a merchant applies across all Vipps services. This is helpful, for example, if the merchant implements [Vipps Login](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api) as part of the payment flow,
 they can use Vipps to log the user in without the need for additional consents.
 
+## Scope
+
+The `scope` determines what information the user is asked to share.
+
+| Scope            | Description | User consent required |
+|:-----------------|:------------|:----------------------|
+| `address`        | A list containing the user's addresses. The list always contains the home address from the National Population Register and can also include work address and other addresses added by the user in Vipps. | yes |
+| `birthDate`      | Birth date. Verified with BankID. ISO 8601 format (2022-12-31) | yes |
+| `email`          | Email address. The flag `email_verified : true` (or `false`) in the response indicates whether the email address is verified. | yes |
+| `name`           | First, middle and given name. Verified with the National Population Register. | yes |
+| `phoneNumber`    | Phone number. Verified when creating the Vipps account. MSISDN format (4791234567).| yes |
+| `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/vipps-login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
+
+The `scope` can include any of the values above, separated by a space. Examples:
+* `phoneNumber`
+* `email`
+* `name address email`
+* `name phoneNumber`
+* `name birthDate`
+* `name email nin`
 
 ## Userinfo flow
 
-The following is a illustration of a consent card and a payment screen.
+This is a illustration of a consent card and a payment screen.
 The user must complete both screens before the merchant can gain access to their profile information.
+It is not possible for the user to complete the payment without these steps.
 
 ![Userinfo flow](images/userinfo-flow.png)
 
@@ -72,30 +93,24 @@ sequenceDiagram
 Scenario: Complete a payment and get the name and phone number of
 a customer.
 
-See [HTTP headers](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/http-headers) for standard headers that should be included.
+See
+[HTTP headers](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/http-headers)
+for the standard headers that should be included.
 
-1. Retrieve the access token with [`POST:/accesstoken/get`](https://vippsas.github.io/vipps-developer-docs/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost).
+1. Retrieve the access token with
+   [`POST:/accesstoken/get`](https://vippsas.github.io/vipps-developer-docs/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost).
 
    The access token is received on a successful request to the token endpoint described in the
-[Access token API guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/access-token-api).
+   [Access token API guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/access-token-api).
 
-   All requests from here on should include the token in the header:
+   All requests from here on must include the token in the header:
 
    | Header        | Description             |
    |:--------------|:------------------------|
    | Authorization | "Bearer {Access Token}" |
 
 
-2. Determine the `scope` of your access request. This can include any of the following values, separated by a space:
-
-    | Scope            | Description | User consent required |
-    |:-----------------|:------------|:----------------------|
-    | `address`        | A list containing the user's addresses. The list always contains the home address from the National Population Register and can also include work address and other addresses added by the user in Vipps. | yes |
-    | `birthDate`      | Birth date. Verified with BankID. ISO 8601 format (2022-12-31) | yes |
-    | `email`          | Email address. The flag `email_verified : true` (or `false`) in the response indicates whether the email address is verified. | yes |
-    | `name`           | First, middle and given name. Verified with the National Population Register. | yes |
-    | `phoneNumber`    | Phone number. Verified when creating the Vipps account. MSISDN format (4791234567).| yes |
-    | `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/vipps-login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
+2. Specify the `scope` for your access request. 
 
    Example from the [Invoicing through ePayment](https://vippsas.github.io/vipps-developer-docs/docs/vipps-solutions/invoice-through-epayments) solution, which uses the [CreatePayments](https://vippsas.github.io/vipps-developer-docs/api/epayment#tag/CreatePayments) endpoint from the [ePayment API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/epayment-api):
 
