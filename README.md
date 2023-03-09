@@ -49,10 +49,10 @@ The `scope` determines what information the user is asked to share.
 The `scope` can include any of the values above, separated by a space. Examples:
 * `phoneNumber`
 * `email`
-* `name, address, email`
-* `name, phoneNumber`
-* `name, birthDate`
-* `name, email, nin`
+* `name address email`
+* `name phoneNumber`
+* `name birthDate`
+* `name email nin`
 
 ## Userinfo flow
 
