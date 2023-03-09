@@ -35,7 +35,7 @@ they can use Vipps to log the user in without the need for additional consents.
 
 ## Scope
 
-The `scope` determines what infomration the user is asked to share.
+The `scope` determines what information the user is asked to share.
 
 | Scope            | Description | User consent required |
 |:-----------------|:------------|:----------------------|
