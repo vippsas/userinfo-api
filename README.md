@@ -1,16 +1,17 @@
 <!-- START_METADATA
 ---
-title: API guide
+title: Userinfo API guide
+sidebar_label: API guide
 sidebar_position: 1
-pagination_next: null
-pagination_prev: null
+description: Find technical details about integrating with the Userinfo API.
+pagination_prev: Null
+pagination_next: Null
 ---
 END_METADATA -->
 
-
 # Userinfo API
 
-The Vipps Userinfo API allows merchants to request the user's profile information as part of the payment flow.
+The Userinfo API allows merchants to request the user's profile information as part of the payment flow.
 The API follows the
 [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
 
@@ -30,7 +31,9 @@ The consent card must be accepted before approving the payment or agreement in V
 Once the flow is completed, the merchant can get the profile
 information from the [Get Userinfo](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo) endpoint.
 
-A user's consent to share information with a merchant applies across all Vipps services. This is helpful, for example, if the merchant implements [Vipps Login](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api) as part of the payment flow,
+A user's consent to share information with a merchant applies across all Vipps services.
+This is helpful, for example, if the merchant implements the [Login API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api)
+as part of the payment flow,
 they can use Vipps to log the user in without the need for additional consents.
 
 ## Scope
@@ -47,6 +50,7 @@ The `scope` determines what information the user is asked to share.
 | `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/vipps-login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
 
 The `scope` can include any of the values above, separated by a space. Examples:
+
 * `phoneNumber`
 * `email`
 * `name address email`
