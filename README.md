@@ -270,8 +270,8 @@ For example:
 **Please note:** It is recommended to get the user's information directly after
 completing the transaction.
 
-There is a *time limit of 168 hours*
-(one week) to retrieve the consented profile data from the `/userinfo` endpoint. This is to
+There is a *time limit of 168 hours* (one week) to retrieve the consented
+profile data from the `/userinfo` endpoint. This is to
 better support merchants that depend on manual steps/checks in their process of
 fetching the profile data. The merchant will get the information that is in the
 user profile at the time when they actually fetch the information. This means
