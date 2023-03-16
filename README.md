@@ -267,13 +267,31 @@ For example:
 ```
 ## Time limit
 
-**Please note:** It is recommended to get the user's information directly after
+It is recommended to get the user's information directly after
 completing the transaction.
 
 There is a *time limit of 168 hours* (one week) to retrieve the consented
-profile data from the `/userinfo` endpoint. This is to
-better support merchants that depend on manual steps/checks in their process of
+profile data from the `/userinfo` endpoint.
+
+This is to better support merchants that depend on manual steps/checks in their process of
 fetching the profile data. The merchant will get the information that is in the
 user profile at the time when they actually fetch the information. This means
 that the information might have changed from the time the user completed the
 transaction and the fetching of the profile data.
+
+If you attempt to retrieve the user's information after 168 hours, you will
+get an error.
+
+If you use the eCom API and `GET:/details` after 168 hours, the response will
+not contain the user's information, but instead:
+
+```
+"userDetails": {
+  "bankIdVerified": 0,
+  "email": "[Expired]",
+  "firstName": "[Expired]",
+  "lastName": "[Expired]",
+  "mobileNumber": "[Expired]",
+  "userId": "[Expired]"
+}
+```
