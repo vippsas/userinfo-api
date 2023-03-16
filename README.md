@@ -114,7 +114,7 @@ for the standard headers that should be included.
    | Authorization | "Bearer {Access Token}" |
 
 
-2. Specify the `scope` for your access request. 
+2. Specify the `scope` for your access request.
 
    Example from the [Invoicing through ePayment](https://vippsas.github.io/vipps-developer-docs/docs/vipps-solutions/invoice-through-epayments) solution, which uses the [CreatePayments](https://vippsas.github.io/vipps-developer-docs/api/epayment#tag/CreatePayments) endpoint from the [ePayment API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/epayment-api):
 
@@ -149,7 +149,7 @@ for the standard headers that should be included.
 
 4. The user consents to the information sharing and completes the payment in Vipps.
 
-5. Retrieve the `sub`, which identifies the user. The `sub` is a link between the merchant and the user and can be used to retrieve the user's details from [`/userinfo`](https://vippsas.github.io/vipps-developer-docs/api/userinfo) endpoint. The `sub` is based on the user's national identity number (*fødselsnummer*, or National number, in Norway) and does not change (except in very special cases).
+5. Retrieve the `sub`, which identifies the user. The `sub` is a link between the merchant and the user and can be used to retrieve the user's details from [`/userinfo`](https://vippsas.github.io/vipps-developer-docs/api/userinfo) endpoint. The `sub` is based on the user's national identity number (*fødselsnummer*, or National number, in Norway) and does not change (except in _very_ special cases).
 
    The format of the `sub` is:
 
@@ -190,7 +190,6 @@ This is an example based on the [Recurring API](https://vippsas.github.io/vipps-
 See [HTTP headers](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/http-headers) for additional standard headers that should be included.
 
 ### Request
-
 
 To request the `scope`, add the scope to the initial [`POST:/recurring/agreements`](https://vippsas.github.io/vipps-developer-docs/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3) call.
 
@@ -266,3 +265,15 @@ For example:
   ]
 }
 ```
+## Time limit
+
+**Please note:** It is recommended to get the user's information directly after
+completing the transaction.
+
+There is a *time limit of 168 hours*
+(one week) to retrieve the consented profile data from the `/userinfo` endpoint. This is to
+better support merchants that depend on manual steps/checks in their process of
+fetching the profile data. The merchant will get the information that is in the
+user profile at the time when they actually fetch the information. This means
+that the information might have changed from the time the user completed the
+transaction and the fetching of the profile data.
