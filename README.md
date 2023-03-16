@@ -282,8 +282,11 @@ transaction and the fetching of the profile data.
 If you attempt to retrieve the user's information after 168 hours, you will
 get an error.
 
-If you use the eCom API and `GET:/details` after 168 hours, the response will
-not contain the user's information, but instead:
+If you use the
+[eCom API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/ecom-api)
+and
+[`GET:/ecomm/v2/payments/{orderId}/details`](https://vippsas.github.io/vipps-developer-docs/api/ecom#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET)
+after 168 hours, the response will not contain the user's information, but instead:
 
 ```
 "userDetails": {
