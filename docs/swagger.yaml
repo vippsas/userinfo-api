@@ -16,42 +16,22 @@ paths:
       summary: Get Userinfo
       description: >-
         This endpoint returns the payload with the information that the user has consented to share.
-        Find more info on the `/userinfo` endpoint at the OIDC Standard https://openid.net/specs/openid-connect-core-1_0.html#UserInfo
+        Find more info on the `/userinfo` endpoint at the OIDC Standard https://openid.net/specs/openid-connect-core-1_0.html#UserInfo.
       operationId: getUserinfo
       parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/Ocp-Apim-Subscription-Key"
+        - $ref: "#/components/parameters/Merchant-Serial-Number"
+        - $ref: "#/components/parameters/Vipps-System-Name"
+        - $ref: "#/components/parameters/Vipps-System-Version"
+        - $ref: "#/components/parameters/Vipps-System-Plugin-Name"
+        - $ref: "#/components/parameters/Vipps-System-Plugin-Version"
         - name: sub
           in: path
           description: The `sub` is specified when fetching payment details
           required: true
           schema:
             type: string
-        - in: header
-          name: Authorization
-          description: >-
-            The access token is a base64-encoded string that is required for all API calls.
-            It is a JWT (JSON Web Token).
-            The access token is fetched from the
-            [`POST:/accesstoken/get`](https://vippsas.github.io/vipps-developer-docs/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost)
-            endpoint.
-            It is valid for 1 hour in the test environment and 24 hours in the production environment.
-          required: true
-          schema:
-            type: string
-          example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni..."
-        - in: header
-          name: Merchant-Serial-Number
-          description: >-
-            The Merchant Serial Number (MSN) is a unique id for the sales unit
-            that this payment is made for.
-            This is a required parameter if you are a Vipps partner
-            making payments on behalf of a merchant.
-            The partner must use the merchant's MSN (not the partner's MSN).
-            This parameter is optional, and recommended, for regular Vipps
-            merchants making payments for themselves.
-          required: false
-          schema:
-            type: string
-          example: '123456'
       responses:
         "200":
           description: Get Userinfo
@@ -90,6 +70,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserinfoError'
 components:
+  parameters:
+
+    Authorization:
+      in: header
+      name: Authorization
+      description: >-
+        The access token is a base64-encoded string that is required for all API calls.
+        It is a JWT (JSON Web Token).
+        The access token is fetched from the
+            [`POST:/accesstoken/get`](https://vippsas.github.io/vipps-developer-docs/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost)
+            endpoint.
+        It is valid for 1 hour in the test environment and 24 hours in the production environment.
+      required: true
+      schema:
+        type: string
+      example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni..."
+
+    Ocp-Apim-Subscription-Key:
+      in: header
+      name: Ocp-Apim-Subscription-Key
+      description: |-
+        The subscription key for your API product is available on portal.vipps.no, under the 'Utvikler' tab.
+        Keep it secret.
+      required: true
+      schema:
+        type: string
+      example: 0f14ebcab0ec4b29ae0cb90d91b4a84a
+
+    Merchant-Serial-Number:
+      name: Merchant-Serial-Number
+      in: header
+      description: |-
+        The Merchant Serial Number (MSN) is a unique id for the sales unit
+        for which this payment is made.
+        This is a required parameter if you are a Vipps Recurring partner
+        making payments on behalf of a merchant.
+        The partner must use the merchant's MSN (not the partner's MSN).
+        This parameter is optional, and recommended, for regular Vipps
+        merchants making payments for themselves.
+      required: false
+      schema:
+        type: string
+      example: 123456
+    Vipps-System-Name:
+      name: Vipps-System-Name
+      in: header
+      description: The name of the ecommerce solution. One word in lowercase letters is good.
+      schema:
+        type: string
+      example: woocommerce
+    Vipps-System-Version:
+      name: Vipps-System-Version
+      in: header
+      description: The version number of the ecommerce solution.
+      schema:
+        type: string
+      example: "5.4"
+
+    Vipps-System-Plugin-Name:
+      name: Vipps-System-Plugin-Name
+      in: header
+      description: The name of the ecommerce plugin (if applicable). One word in lowercase letters is good.
+      schema:
+        type: string
+      example: "vipps-woocommerce"
+    Vipps-System-Plugin-Version:
+      name: Vipps-System-Plugin-Version
+      in: header
+      description: The version number of the ecommerce plugin (if applicable).
+      schema:
+        type: string
+      example: "1.2.1"
+
   schemas:
     Address:
       type: object
