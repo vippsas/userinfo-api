@@ -20,18 +20,68 @@ paths:
       operationId: getUserinfo
       parameters:
         - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/sub"
         - $ref: "#/components/parameters/Ocp-Apim-Subscription-Key"
         - $ref: "#/components/parameters/Merchant-Serial-Number"
         - $ref: "#/components/parameters/Vipps-System-Name"
         - $ref: "#/components/parameters/Vipps-System-Version"
         - $ref: "#/components/parameters/Vipps-System-Plugin-Name"
         - $ref: "#/components/parameters/Vipps-System-Plugin-Version"
-        - name: sub
-          in: path
-          description: The `sub` is specified when fetching payment details
-          required: true
-          schema:
-            type: string
+      responses:
+        "200":
+          description: Get Userinfo
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Userinfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserinfoError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserinfoError'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserinfoError'
+        '404':
+          description: Not Found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserinfoError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/UserinfoError'
+
+  '/vipps-userinfo-api/userinfo/':
+    get:
+      summary: Get Userinfo for use in the Login API flow.
+      description: >-
+        This endpoint is only for use in the [Login API in browser flow](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/api-guide/integration#userinfo).
+        It returns the payload with the information that the user has consented to share.
+        Find more info on the `/userinfo` endpoint at the OIDC Standard https://openid.net/specs/openid-connect-core-1_0.html#UserInfo.
+      operationId: userinfoAuthorizationCode
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/sub"
+        - $ref: "#/components/parameters/Ocp-Apim-Subscription-Key"
+        - $ref: "#/components/parameters/Merchant-Serial-Number"
+        - $ref: "#/components/parameters/Vipps-System-Name"
+        - $ref: "#/components/parameters/Vipps-System-Version"
+        - $ref: "#/components/parameters/Vipps-System-Plugin-Name"
+        - $ref: "#/components/parameters/Vipps-System-Plugin-Version"
       responses:
         "200":
           description: Get Userinfo
@@ -142,6 +192,14 @@ components:
       schema:
         type: string
       example: "1.2.1"
+      
+    sub:
+      name: sub
+      in: path
+      description: The `sub` is specified when fetching payment details.
+      schema:
+        type: string
+      required: true
 
   schemas:
     Address:
