@@ -2,7 +2,8 @@ openapi: '3.0.0'
 info:
   description: |
     Vipps offers the possibility for merchants to ask for the user's profile information as part of the payment flow.
-    This follows the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo) for the UserInfo endpoint.
+    This follows the [OIDC Standard: UserInfo endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
+    See the [Userinfo API guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/userinfo-api) for a description.
   version: 2.0.2
   title: Vipps Userinfo API
 servers:
@@ -16,11 +17,11 @@ paths:
       summary: Get Userinfo
       description: >-
         This endpoint returns the payload with the information that the user has consented to share.
-        Find more info on the `/userinfo` endpoint at the OIDC Standard https://openid.net/specs/openid-connect-core-1_0.html#UserInfo.
+        Find more info on the `/userinfo` endpoint at the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
       operationId: getUserinfo
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/sub"
+        - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/Ocp-Apim-Subscription-Key"
         - $ref: "#/components/parameters/Merchant-Serial-Number"
         - $ref: "#/components/parameters/Vipps-System-Name"
@@ -67,15 +68,14 @@ paths:
 
   '/vipps-userinfo-api/userinfo/':
     get:
-      summary: Get Userinfo for use in the Login API flow.
+      summary: Get Userinfo in the Login API flow
       description: >-
         This endpoint is only for use in the [Login API in browser flow](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/api-guide/integration#userinfo).
         It returns the payload with the information that the user has consented to share.
-        Find more info on the `/userinfo` endpoint at the OIDC Standard https://openid.net/specs/openid-connect-core-1_0.html#UserInfo.
+        Find more info on the `/userinfo` endpoint at the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
       operationId: userinfoAuthorizationCode
       parameters:
         - $ref: "#/components/parameters/Authorization"
-        - $ref: "#/components/parameters/sub"
         - $ref: "#/components/parameters/Ocp-Apim-Subscription-Key"
         - $ref: "#/components/parameters/Merchant-Serial-Number"
         - $ref: "#/components/parameters/Vipps-System-Name"
