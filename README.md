@@ -29,10 +29,10 @@ For example, Android (left) and iOS (right):
 The consent card must be accepted before approving the payment or agreement in Vipps.
 
 Once the flow is completed, the merchant can get the profile
-information from the [Get Userinfo](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo) endpoint.
+information from the [Get Userinfo](https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo) endpoint.
 
 A user's consent to share information with a merchant applies across all Vipps services.
-This is helpful, for example, if the merchant implements the [Login API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api)
+This is helpful, for example, if the merchant implements the [Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api)
 as part of the payment flow,
 they can use Vipps to log the user in without the need for additional consents.
 
@@ -47,7 +47,7 @@ The `scope` determines what information the user is asked to share.
 | `email`          | Email address. The flag `email_verified : true` (or `false`) in the response indicates whether the email address is verified. | yes |
 | `name`           | First, middle and given name. Verified with the National Population Register. | yes |
 | `phoneNumber`    | Phone number. Verified when creating the Vipps account. MSISDN format (4791234567).| yes |
-| `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/vipps-login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
+| `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
 
 The `scope` can include any of the values above, separated by a space. Examples:
 
@@ -98,14 +98,14 @@ Scenario: Complete a payment and get the name and phone number of
 a customer.
 
 See
-[HTTP headers](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/http-headers)
+[HTTP headers](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/http-headers)
 for the standard headers that should be included.
 
 1. Retrieve the access token with
-   [`POST:/accesstoken/get`](https://vippsas.github.io/vipps-developer-docs/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost).
+   [`POST:/accesstoken/get`](https://developer.vippsmobilepay.com/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost).
 
    The access token is received on a successful request to the token endpoint described in the
-   [Access token API guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/access-token-api).
+   [Access token API guide](https://developer.vippsmobilepay.com/docs/APIs/access-token-api).
 
    All requests from here on must include the token in the header:
 
@@ -116,7 +116,7 @@ for the standard headers that should be included.
 
 2. Specify the `scope` for your access request.
 
-   Example from the [Invoicing through ePayment](https://vippsas.github.io/vipps-developer-docs/docs/vipps-solutions/invoice-through-epayments) solution, which uses the [CreatePayments](https://vippsas.github.io/vipps-developer-docs/api/epayment#tag/CreatePayments) endpoint from the [ePayment API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/epayment-api):
+   Example from the [Invoicing through ePayment](https://developer.vippsmobilepay.com/docs/vipps-solutions/invoice-through-epayments) solution, which uses the [CreatePayments](https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments) endpoint from the [ePayment API](https://developer.vippsmobilepay.com/docs/APIs/epayment-api):
 
     ```json
     {
@@ -143,13 +143,13 @@ for the standard headers that should be included.
 
 3. Make the API call that initiates the Vipps payment or agreement. Include the `scope` in the body:
 
-   * Recurring API: [`POST:/recurring/agreements`](https://vippsas.github.io/vipps-developer-docs/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
-   * ePayment API: [`POST:/epayment/v1/payments`](https://vippsas.github.io/vipps-developer-docs/api/epayment#tag/CreatePayments)
-   * eCom API: [`POST:/ecomm/v2/payments`](https://vippsas.github.io/vipps-developer-docs/api/ecom#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST)
+   * Recurring API: [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
+   * ePayment API: [`POST:/epayment/v1/payments`](https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments)
+   * eCom API: [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST)
 
 4. The user consents to the information sharing and completes the payment in Vipps.
 
-5. Retrieve the `sub`, which identifies the user. The `sub` is a link between the merchant and the user and can be used to retrieve the user's details from [`/userinfo`](https://vippsas.github.io/vipps-developer-docs/api/userinfo) endpoint. The `sub` is based on the user's national identity number (*fødselsnummer*, or National number, in Norway) and does not change (except in _very_ special cases).
+5. Retrieve the `sub`, which identifies the user. The `sub` is a link between the merchant and the user and can be used to retrieve the user's details from [`/userinfo`](https://developer.vippsmobilepay.com/api/userinfo) endpoint. The `sub` is based on the user's national identity number (*fødselsnummer*, or National number, in Norway) and does not change (except in _very_ special cases).
 
    The format of the `sub` is:
 
@@ -159,26 +159,26 @@ for the standard headers that should be included.
 
    Retrieve the `sub` by calling the API endpoint that provides information about the payment or agreement. For example:
 
-   * Recurring API: [`GET:/recurring/agreements/{agreementId}`](https://vippsas.github.io/vipps-developer-docs/api/recurring#tag/Agreement-v3-endpoints/operation/FetchAgreementV3)
-   * ePayment API: [`GET:/epayment/v1/payments/{reference}`](https://vippsas.github.io/vipps-developer-docs/api/epayment#tag/QueryPayments/operation/getPayment)
-   * eCom API: [`GET:/ecomm/v2/payments/{orderId}/details`](https://vippsas.github.io/vipps-developer-docs/api/ecom#tag/Vipps-eCom-API/operation/integrationTestApprovePayment)
+   * Recurring API: [`GET:/recurring/agreements/{agreementId}`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/FetchAgreementV3)
+   * ePayment API: [`GET:/epayment/v1/payments/{reference}`](https://developer.vippsmobilepay.com/api/epayment#tag/QueryPayments/operation/getPayment)
+   * eCom API: [`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/integrationTestApprovePayment)
 
 6. To retrieve the user's information, call
-   [`GET:/vipps-userinfo-api/userinfo/{sub}`](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo)
+   [`GET:/vipps-userinfo-api/userinfo/{sub}`](https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo)
    with the `sub` that was retrieved earlier.
 
    This endpoint returns the payload with the information that the user has consented to share. See below on how to construct the call.
 
    **Please note:** It is recommended to get the user's information directly after completing the transaction. There is a *time limit of 168 hours*
-(one week) to retrieve the consented profile data from the [`/userinfo`](https://vippsas.github.io/vipps-developer-docs/api/userinfo) endpoint.
+(one week) to retrieve the consented profile data from the [`/userinfo`](https://developer.vippsmobilepay.com/api/userinfo) endpoint.
 
    This is to better support merchants that depend on manual steps/checks in their process of fetching the profile data. The merchant will get the information that is in the user profile at the time when they actually fetch the information. This means that the information might have changed from the time the user completed the transaction and the fetching of the profile data.
 
-   **Please note:** The `sub` is added asynchronously, so if the API call in (5) above is made within (milli)seconds of the payment approval in the app, it may not be available. If that happens, simply make another request. See [Polling guidelines](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/polling-guidelines) for more recommendations.
+   **Please note:** The `sub` is added asynchronously, so if the API call in (5) above is made within (milli)seconds of the payment approval in the app, it may not be available. If that happens, simply make another request. See [Polling guidelines](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/polling-guidelines) for more recommendations.
 
 ## Example Userinfo call
 
-This is an example based on the [Recurring API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/recurring-api/vipps-recurring-api#userinfo).
+This is an example based on the [Recurring API](https://developer.vippsmobilepay.com/docs/APIs/recurring-api/vipps-recurring-api#userinfo).
 
 
 ### Headers
@@ -187,11 +187,11 @@ This is an example based on the [Recurring API](https://vippsas.github.io/vipps-
 |:--------------|:------------------------|
 | Authorization | "Bearer {Access Token}" |
 
-See [HTTP headers](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/http-headers) for additional standard headers that should be included.
+See [HTTP headers](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/http-headers) for additional standard headers that should be included.
 
 ### Request
 
-To request the `scope`, add the scope to the initial [`POST:/recurring/agreements`](https://vippsas.github.io/vipps-developer-docs/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3) call.
+To request the `scope`, add the scope to the initial [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3) call.
 
 For example:
 
@@ -283,9 +283,9 @@ If you attempt to retrieve the user's information after 168 hours, you will
 get an error.
 
 If you use the
-[eCom API](https://vippsas.github.io/vipps-developer-docs/docs/APIs/ecom-api)
+[eCom API](https://developer.vippsmobilepay.com/docs/APIs/ecom-api)
 and
-[`GET:/ecomm/v2/payments/{orderId}/details`](https://vippsas.github.io/vipps-developer-docs/api/ecom#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET)
+[`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET)
 after 168 hours, the response will not contain the user's information, but instead:
 
 ```

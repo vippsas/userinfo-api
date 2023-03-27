@@ -3,7 +3,7 @@ info:
   description: |
     Vipps offers the possibility for merchants to ask for the user's profile information as part of the payment flow.
     This follows the [OIDC Standard: UserInfo endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
-    See the [Userinfo API guide](https://vippsas.github.io/vipps-developer-docs/docs/APIs/userinfo-api) for a description.
+    See the [Userinfo API guide](https://developer.vippsmobilepay.com/docs/APIs/userinfo-api) for a description.
   version: 2.0.2
   title: Vipps Userinfo API
 servers:
@@ -70,7 +70,7 @@ paths:
     get:
       summary: Get Userinfo in the Login API flow
       description: >-
-        This endpoint is only for use in the [Login API in browser flow](https://vippsas.github.io/vipps-developer-docs/docs/APIs/login-api/api-guide/integration#userinfo).
+        This endpoint is only for use in the [Login API in browser flow](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/integration#userinfo).
         It returns the payload with the information that the user has consented to share.
         Find more info on the `/userinfo` endpoint at the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
       operationId: userinfoAuthorizationCode
@@ -129,7 +129,7 @@ components:
         The access token is a base64-encoded string that is required for all API calls.
         It is a JWT (JSON Web Token).
         The access token is fetched from the
-            [`POST:/accesstoken/get`](https://vippsas.github.io/vipps-developer-docs/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost)
+            [`POST:/accesstoken/get`](https://developer.vippsmobilepay.com/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost)
             endpoint.
         It is valid for 1 hour in the test environment and 24 hours in the production environment.
       required: true
@@ -345,7 +345,7 @@ components:
       type: object
       description: |-
         The standard Error object.
-        See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/errors
+        See https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/errors
       properties:
         type:
           type: string
