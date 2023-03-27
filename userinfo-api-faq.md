@@ -16,13 +16,13 @@ See the [Vipps Userinfo API](README.md) for all the technical details.
 
 For more common Vipps questions, see:
 
-* [Vipps API General FAQ](https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/faqs)
+* [Vipps API General FAQ](https://developer.vippsmobilepay.com/docs/vipps-developers/faqs)
 
 
 <!-- START_COMMENT -->
 
 ℹ️ Please use the website:
-[Vipps MobilePay Technical Documentation](https://vippsas.github.io/vipps-developer-docs/docs/APIs/userinfo-api).
+[Vipps MobilePay Technical Documentation](https://developer.vippsmobilepay.com/docs/APIs/userinfo-api).
 
 <!-- END_COMMENT -->
 
