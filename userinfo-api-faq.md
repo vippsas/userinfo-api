@@ -61,4 +61,5 @@ for us to have access to his/her personal data in our system?*
 Your system can dynamically detect when a user's consent has been revoked by using *consent webhooks*.
 This is a system for notifying merchants when an end user revokes their consent.
 See the
-[Consent webhooks](api-guide/important-information.md#revoke-consent-webhook) section for more information.
+[Login API guide: Consent webhooks](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/important-information#revoke-consent-webhook)
+section for more information.
