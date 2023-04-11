@@ -12,6 +12,8 @@ END_METADATA -->
 # Userinfo API
 
 The Userinfo API allows merchants to request the user's profile information as part of the payment flow.
+This is also called "Profile Sharing".
+
 The API follows the
 [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
 
