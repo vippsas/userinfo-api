@@ -366,18 +366,23 @@ components:
       properties:
         type:
           type: string
+          description: A URI reference that identifies the problem type.
           example: https://example.com/validation-error
         title:
           type: string
+          description: "A short, human-readable summary of the problem type.  It will not change from occurrence to occurrence of the problem."
           example: Your request parameters didn't validate.
         status:
           type: string
-          example: The HTTP status code.
+          description: The HTTP status code.
+          example: 400
         detail:
           type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
           example: The request body contains one or more errors
         instance:
           type: string
+          description: An id that can help when troubleshooting.
           example: 123e4567-e89b-12d3-a456-426655440000
         extraInfo:
           type: object
