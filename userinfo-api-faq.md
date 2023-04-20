@@ -46,20 +46,6 @@ The `sub` will not change if a user removes their consents, and logs in again an
 - If a user deletes the Vipps Profile and creates a new one.
 - If a user changes the phone number (in practice: Creates a new Vipps user)
 
-## If a user removes their consents, is the `sub` still the same?
-
-Yes, the `sub` provided will be the same when the user logs in again and re-consents.
-
-## If a user deletes their Vipps Profile and create a new one, is the `sub` still the same?
-
-No, upon deletion of the Vipps Profile the `sub` is also removed.
-
-## If a user changes phone number, is the `sub` still the same?
-
-No, in order to sign up with a new phone number a user will have to delete the
-Vipps profile on the old phone number. When this Vipps profile is deleted, the
-`sub` is also removed.
-
 ## Why can I get userinfo after the user has revoked consent?
 
 During a login or a payment session the user consent to share information if
