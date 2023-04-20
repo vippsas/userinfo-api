@@ -26,6 +26,26 @@ For more common Vipps questions, see:
 
 <!-- END_COMMENT -->
 
+## What is the `sub`?
+
+The `sub` is a unique user identifier for a Vipps user, related to that user's consent
+to share information with a specific MSN (sales unit).
+
+The `sub` is _based on_ the user's national identity number ("fødselsnummer" in Norway),
+but  is not a replacement for NIN (National Identity Number) or any other unique identifier
+for the user. 
+
+The `sub` is unique for each MSN (sales unit).
+User may have many different `sub`s for the same merchant: One for each of
+the merchant's MSNs (sales units).
+You can not use the `sub` for one MSN with the API keys for a different MSN.
+
+The `sub` will not change if a user removes their consents, and logs in again and re-consents.
+
+**Please note:** There are some special cases where the `sub` will change for a user:
+- If a user deletes the Vipps Profile and creates a new one.
+- If a user changes the phone number (in practice: Creates a new Vipps user)
+
 ## If a user removes their consents, is the `sub` still the same?
 
 Yes, the `sub` provided will be the same when the user logs in again and re-consents.
@@ -52,6 +72,19 @@ do not handle online fetching and processing of the user info as part of a
 payment session, we keep this information accessible for the merchant for the
 next 168 hours, even though the user revokes the consent in this period.
 Revoking consents will immediately affect future login and payment sessions.
+
+## How can I get updated information, like addresses, for a user?
+
+When the user consents to sharing information with the merchant, the merchant
+has 168 hours to retrieve the information (with the Login API the limit is 30 minutes).
+The merchant must save this information and handle everything according to GDPR.  
+
+If the merchant needs an updated address for the user, the merchant must ask the
+user for a new consent. 
+
+With the
+[Vipps Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
+the merchant can retrieve updated infomation every time the user logs in.
 
 ## How can we detect users' consent removal?
 
