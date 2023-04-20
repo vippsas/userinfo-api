@@ -26,19 +26,26 @@ For more common Vipps questions, see:
 
 <!-- END_COMMENT -->
 
-## If a user removes their consents, is the `sub` still the same?
+## What is the `sub`?
 
-Yes, the `sub` provided will be the same when the user logs in again and re-consents.
+The `sub` is a unique user identifier for a Vipps user, related to that user's consent
+to share information with a specific MSN (sales unit).
 
-## If a user deletes their Vipps Profile and create a new one, is the `sub` still the same?
+The `sub` is _based on_ the user's national identity number ("fødselsnummer" in Norway),
+but  is not a replacement for NIN (National Identity Number) or any other unique identifier
+for the user. 
 
-No, upon deletion of the Vipps Profile the `sub` is also removed.
+The `sub` is unique for each MSN (sales unit).
+A user may have many different `sub`s for the same merchant: One for each of
+the merchant's MSNs (sales units).
+You cannot combine the `sub` for one MSN and the API keys for a different MSN.
 
-## If a user changes phone number, is the `sub` still the same?
+The `sub` will not change if a user removes their consents, logs in again, and re-consents.
 
-No, in order to sign up with a new phone number a user will have to delete the
-Vipps profile on the old phone number. When this Vipps profile is deleted, the
-`sub` is also removed.
+**Please note:** There are some special cases where the `sub` will change for a user:
+
+- If a user deletes the Vipps Profile and creates a new one.
+- If a user changes the phone number (in practice: Creates a new Vipps user)
 
 ## Why can I get userinfo after the user has revoked consent?
 
@@ -52,6 +59,19 @@ do not handle online fetching and processing of the user info as part of a
 payment session, we keep this information accessible for the merchant for the
 next 168 hours, even though the user revokes the consent in this period.
 Revoking consents will immediately affect future login and payment sessions.
+
+## How can I get updated information, like addresses, for a user?
+
+When the user consents to sharing information with the merchant, the merchant
+has 168 hours to retrieve the information 
+The merchant must save this information and handle everything according to GDPR.  
+
+If the merchant needs an updated address for the user, the merchant must ask the
+user for a new consent. 
+
+With the
+[Vipps Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
+the merchant can retrieve updated infomation every time the user logs in.
 
 ## How can we detect users' consent removal?
 
