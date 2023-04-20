@@ -1,4 +1,3 @@
-<!-- START_METADATA
 ---
 title: Userinfo API guide
 sidebar_label: API guide
@@ -7,7 +6,6 @@ description: Find technical details about integrating with the Userinfo API.
 pagination_prev: Null
 pagination_next: Null
 ---
-END_METADATA -->
 
 # Userinfo API
 
@@ -287,6 +285,7 @@ For example:
   ]
 }
 ```
+
 ## Time limit
 
 It is recommended to get the user's information directly after

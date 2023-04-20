@@ -1,4 +1,3 @@
-<!-- START_METADATA
 ---
 title: Userinfo API frequently asked questions
 sidebar_label: FAQ
@@ -7,7 +6,6 @@ description: Userinfo API frequently asked questions
 pagination_next: null
 pagination_prev: null
 ---
-END_METADATA -->
 
 # Frequently asked questions
 
@@ -18,13 +16,6 @@ For more common Vipps questions, see:
 
 * [Vipps API General FAQ](https://developer.vippsmobilepay.com/docs/vipps-developers/faqs)
 
-
-<!-- START_COMMENT -->
-
-ℹ️ Please use the website:
-[Vipps MobilePay Technical Documentation](https://developer.vippsmobilepay.com/docs/APIs/userinfo-api).
-
-<!-- END_COMMENT -->
 
 ## What is the `sub`?
 
