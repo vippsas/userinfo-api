@@ -76,7 +76,7 @@ Revoking consents will immediately affect future login and payment sessions.
 ## How can I get updated information, like addresses, for a user?
 
 When the user consents to sharing information with the merchant, the merchant
-has 168 hours to retrieve the information (with the Login API the limit is 30 minutes).
+has 168 hours to retrieve the information (with the Login API the limit is ~10 minutes).
 The merchant must save this information and handle everything according to GDPR.  
 
 If the merchant needs an updated address for the user, the merchant must ask the
