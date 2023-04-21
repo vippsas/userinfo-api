@@ -62,7 +62,7 @@ user for a new consent.
 
 With the
 [Vipps Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
-the merchant can retrieve updated infomation every time the user logs in.
+the merchant can retrieve updated information every time the user logs in.
 
 ## How can we detect users' consent removal?
 
