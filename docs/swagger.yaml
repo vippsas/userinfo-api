@@ -215,37 +215,6 @@ components:
       required: true
 
   schemas:
-    Address:
-      type: object
-      required:
-        - addressLine1
-        - city
-        - country
-        - postCode
-      description: This version of the API only supports Norwegian addresses.
-      properties:
-        addressLine1:
-          type: string
-          description: Address line 1
-          example: Robert Levins gate 5
-        addressLine2:
-          type: string
-          description: Address line 2
-          example: 'Att: Rune Garborg'
-        city:
-          type: string
-          description: City
-          example: Oslo
-        country:
-          type: string
-          description: 'Country'
-          example: 'Norway'
-          enum:
-            - Norway
-        postCode:
-          type: string
-          description: Post code
-          example: '0154'
     Userinfo:
       type: object
       properties:
@@ -257,13 +226,12 @@ components:
             $ref: '#/components/schemas/UserinfoAccountInfo'
         address:
           description: 'Contains the user''s preferred (default) address.'
-          items:
-            $ref: '#/components/schemas/UserinfoAddress'
+          $ref: '#/components/schemas/UserinfoAddress'
         other_addresses:
           description: 'Contains an array with the user''s non-default addresses, if any. This list can contain an address with the address_type home, work, and/or other, if the user has registered them in the Vipps app'
           type: array
           items:
-            $ref: '#/components/schemas/Address'
+            $ref: '#/components/schemas/UserinfoAddress'
         birthdate:
           description: 'The user''s birthday formatted as YYYY-MM-DD'
           type: string
