@@ -35,8 +35,8 @@ The `sub` will not change if a user removes their consents, logs in again, and r
 
 **Please note:** There are some special cases where the `sub` will change for a user:
 
-- If a user deletes the Vipps Profile and creates a new one.
-- If a user changes the phone number (in practice: Creates a new Vipps user)
+* If a user deletes the Vipps Profile and creates a new one.
+* If a user changes the phone number (in practice: Creates a new Vipps user)
 
 ## Why can I get userinfo after the user has revoked consent?
 
