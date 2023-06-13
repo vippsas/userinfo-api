@@ -1,3 +1,4 @@
+<!-- START_METADATA
 ---
 title: Userinfo API guide
 sidebar_label: API guide
@@ -6,6 +7,7 @@ description: Find technical details about integrating with the Userinfo API.
 pagination_prev: Null
 pagination_next: Null
 ---
+END_METADATA -->
 
 # Userinfo API
 
@@ -65,7 +67,7 @@ The `scope` can include any of the values above, separated by a space. Examples:
 
 ## Userinfo flow
 
-This is a illustration of a consent card and a payment screen.
+This is an illustration of a consent card and a payment screen.
 The user must complete both screens before the merchant can gain access to their profile information.
 It is not possible for the user to complete the payment without these steps.
 
@@ -309,7 +311,7 @@ and
 [`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET)
 after 168 hours, the response will not contain the user's information, but instead:
 
-```
+```json
 "userDetails": {
   "bankIdVerified": 0,
   "email": "[Expired]",

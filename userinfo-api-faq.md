@@ -1,3 +1,4 @@
+<!-- START_METADATA
 ---
 title: Userinfo API frequently asked questions
 sidebar_label: FAQ
@@ -6,6 +7,7 @@ description: Userinfo API frequently asked questions
 pagination_next: null
 pagination_prev: null
 ---
+END_METADATA -->
 
 # Frequently asked questions
 
@@ -16,18 +18,17 @@ For more common Vipps questions, see:
 
 * [Vipps API General FAQ](https://developer.vippsmobilepay.com/docs/vipps-developers/faqs)
 
-
 ## What is the `sub`?
 
 The `sub` is a unique user identifier for a Vipps user, related to that user's consent
 to share information with a specific MSN (sales unit).
 
-The `sub` is _based on_ the user's national identity number ("fødselsnummer" in Norway),
+The `sub` is *based on* the user's national identity number ("fødselsnummer" in Norway),
 but  is not a replacement for NIN (National Identity Number) or any other unique identifier
-for the user. 
+for the user.
 
 The `sub` is unique for each MSN (sales unit).
-A user may have many different `sub`s for the same merchant: One for each of
+A user may have many `sub`s for the same merchant: One for each of
 the merchant's MSNs (sales units).
 You cannot combine the `sub` for one MSN and the API keys for a different MSN.
 
@@ -41,7 +42,7 @@ The `sub` will not change if a user removes their consents, logs in again, and r
 ## Why can I get userinfo after the user has revoked consent?
 
 During a login or a payment session the user consent to share information if
-it's requested by the merchant. The users information is then available for
+it's requested by the merchant. The user's information is then available for
 the merchant from the userinfo endpoint. For login sessions, user information
 is available for the ongoing login session.
 
@@ -54,11 +55,11 @@ Revoking consents will immediately affect future login and payment sessions.
 ## How can I get updated information, like addresses, for a user?
 
 When the user consents to sharing information with the merchant, the merchant
-has 168 hours to retrieve the information 
+has 168 hours to retrieve the information
 The merchant must save this information and handle everything according to GDPR.  
 
 If the merchant needs an updated address for the user, the merchant must ask the
-user for a new consent. 
+user for a new consent.
 
 With the
 [Vipps Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
