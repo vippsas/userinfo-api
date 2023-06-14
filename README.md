@@ -116,8 +116,8 @@ for the standard headers that should be included.
 2. Specify the `scope` for your access request.
 
    Example from the
-   [Invoicing through ePayment](https://developer.vippsmobilepay.com/docs/vipps-solutions/invoice-through-epayments)
-   solution, which uses the
+   [Invoices solution](https://developer.vippsmobilepay.com/docs/vipps-solutions/invoice-through-epayments),
+   which uses the
    [`POST:/payments`](https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments)
    endpoint from the
    [ePayment API](https://developer.vippsmobilepay.com/docs/APIs/epayment-api):
