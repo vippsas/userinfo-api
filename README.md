@@ -164,7 +164,7 @@ for the standard headers that should be included.
    the merchant and the user and can be used to retrieve the user's details from
    [`GET:/userinfo/{sub}`](https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo).
    The `sub` is based on the user's national identity number (NIN) and does not
-   change (except in _very_ special cases).
+   change (except in *very* special cases).
 
    The format of the `sub` is:
 
