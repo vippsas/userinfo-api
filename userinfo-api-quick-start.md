@@ -1,8 +1,9 @@
 ---
-title: Quick start for the eCom API
+title: Userinfo Quick start
 sidebar_label: Quick start
+id: quick-start
 sidebar_position: 10
-description: Quick steps for getting started with the eCom API.
+description: Quick steps for getting started with the Userinfo API.
 toc_min_heading_level: 2
 toc_max_heading_level: 5
 pagination_next: null
@@ -17,22 +18,19 @@ import TabItem from '@theme/TabItem';
 
 ## Before you begin
 
-
-**Important:** We strongly recommend that all new integrations use the new
-[ePayment API](https://developer.vippsmobilepay.com/docs/APIs/epayment-api).
-
-This document covers the quick steps for getting started with the ePayment API.
+This document covers the quick steps for getting started with the Userinfo API.
 You must have already signed up as an organization with Vipps MobilePay and have
 your test credentials from the merchant portal, as described in the
-[Quick start guide](https://developer.vippsmobilepay.com/docs/vipps-developers/getting-started).
+[Getting started guide](https://developer.vippsmobilepay.com/docs/vipps-developers/getting-started).
 
 **Important:** The examples use standard example values that you must change to
 use *your* values. This includes API keys, HTTP headers, reference, etc.
 
+## Userinfo with ePayment API
 
-## Get user info through ePayment
+This example is for ePayment, but can be applied to the Recurring and eCom APIs.
 
-### Step 1 - Setup
+### Step 1 - Setup for ePayment API
 
 <Tabs
 defaultValue="curl"
@@ -45,7 +43,7 @@ values={[
 
 Import the following files into Postman:
 
-* [eCom API Postman collection](/tools/vipps-ecom-api-postman-collection.json)
+* [Userinfo API Postman collection](/tools/userinfo-api-postman-collection.json)
 * [Global Postman environment](https://github.com/vippsas/vipps-developers/blob/master/tools/vipps-api-global-postman-environment.json)
 
 In Postman, tweak the environment with your own values (see
@@ -53,10 +51,10 @@ In Postman, tweak the environment with your own values (see
 
 * `client_id` - Merchant key required for getting the access token.
 * `client_secret` - Merchant key required for getting the access token.
-* `Ocp-Apim-Subscription-Key` - The subscription key for making API requests.
-* `merchantSerialNumber` - The unique ID for your sales unit.
-* `mobileNumber` - The phone number for your
-   [test user](https://developer.vippsmobilepay.com/docs/vipps-developers/test-environment#test-users).
+* `Ocp-Apim-Subscription-Key` - Merchant subscription key.
+* `merchantSerialNumber` - Merchant ID.
+* `internationalMobileNumber` - The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
+* `mobileNumber` - (For Recurring, eCom, and Login API) The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
 
 For help using Postman, see
 [Quick start guides](https://developer.vippsmobilepay.com/docs/vipps-developers/quick-start-guides).
@@ -69,15 +67,15 @@ No setup needed :)
 </TabItem>
 </Tabs>
 
-### Step 2 - Authentication
+### Step 2 - Authentication for ePayment API
 
-For all the following, you will need an `access_token` from the
+Get an `access_token` from the
 [Access token API](https://developer.vippsmobilepay.com/docs/APIs/access-token-api):
 [`POST:/accesstoken/get`][access-token-endpoint].
 This provides you with access to the API.
 
 <Tabs
-defaultValue="curl"
+defaultValue="postman"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -111,14 +109,12 @@ curl https://apitest.vipps.no/accessToken/get \
 
 The property `access_token` should be used for all other API requests in the `Authorization` header as the Bearer token.
 
-### Step 3 - A simple payment
+### Step 3 - A simple payment with profile flow
 
-Initiate a payment with: [`POST:/payments`][create-payment-endpoint].
-When your test mobile number
-is provided in `phoneNumber`, it will be pre-filled in the form.
+Provide the `scope` object in the [`POST:/payments`][create-payment-endpoint] call. This contains the information types that you want access to, separated by spaces (e.g., "name address email phoneNumber birthDate").
 
 <Tabs
-defaultValue="curl"
+defaultValue="postman"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -127,15 +123,15 @@ values={[
 <TabItem value="postman">
 
 ```bash
-Send request Initiate Payment
+Send request Create Payment
 ```
 
 </TabItem>
 <TabItem value="curl">
 
 ```bash
-curl --location 'https://apitest.vipps.no/ecomm/v2/payments/' \
--H 'Content-Type: application/json' \
+curl https://apitest.vipps.no/epayment/v1/payments \
+-H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
 -H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
 -H "Merchant-Serial-Number: 123456" \
@@ -143,52 +139,45 @@ curl --location 'https://apitest.vipps.no/ecomm/v2/payments/' \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
 -H "Vipps-System-Plugin-Version: 4.5.6" \
+-H "Idempotency-Key: 49ca711a-acee-4d01-993b-9487112e1def" \
 -X POST \
 -d '{
-  "customerInfo": {
-    "mobileNumber": "91234567"
-  },
-  "merchantInfo": {
-    "merchantSerialNumber": "123456",
-    "callbackPrefix":"https://example.com/vipps/callbacks-for-payment-update-from-vipps",
-    "fallBack": "https://example.com/vipps/fallback-result-page-for-both-success-and-failure/acme-shop-123-order123abc",
-  },
-  "transaction": {
-    "amount": 49900,
-    "orderId": "UNIQUE-PAYMENT-REFERENCE",
-    "transactionText": "One pair of socks.",
-}
+    "amount": {
+        "value": 49900,
+        "currency": "NOK"
+    },
+    "paymentMethod": {
+        "type": "WALLET"
+    },
+    "customer": {
+        "phoneNumber": 4791234567
+    },
+    "reference": 2486791690535039148,
+    "userFlow": "WEB_REDIRECT",
+    "returnUrl": "https://example.com/redirect?reference=2486791690535039148",
+    "paymentDescription": "Purchase of socks",
+    "profile": {
+        "scope": "name phoneNumber address birthDate"
+    }
 }'
 ```
-
-Note that `orderId` must be unique for each payment you create.
 
 </TabItem>
 </Tabs>
 
+### Step 4 - Complete the payment
 
-### Step 4 - Completing the payment
+Open the link that appears, and it will take you to a landing page where you can enter your phone number.
+Open the Vipps app and complete the payment.
 
-*Ctrl+click* (*Command-click* on macOS) on the link that appears, and it will take you to the
-[landing page](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/vipps-landing-page/).
-The phone number of your test user should already be filled in, so you only have to click *Next*.
-You will be presented with the payment in the app, where you can complete or reject the payment.
-Once you have acted upon the payment, you will be redirected back to the specified `fallBack` URL under a "best effort" policy.
+### Step 5 - Get the sub for the payment
 
-:::note
-We cannot guarantee the user will be redirected back to the same browser or session, or that they will at all be redirected back. User interaction can be unpredictable, and the user may choose to fully close the app or browser.
-:::
-
-
-
-### Step 5 - Getting the status of the payment
-
-To receive the result of the user action you may poll the status of the payment via the
-[`GET:/payments/{orderId}/details`][get-payment-endpoint].
-
+The unique identifier `sub` can be retrieved in the payment details
+when calling the
+[`GET:/payments/{reference}`][get-payment-endpoint] endpoint.
 
 <Tabs
-defaultValue="curl"
+defaultValue="postman"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -197,17 +186,126 @@ values={[
 <TabItem value="postman">
 
 ```bash
-Send request Get Payment Details
+Send request Get payment details
 ```
 
 </TabItem>
 <TabItem value="curl">
 
 ```bash
-curl https://apitest.vipps.no/ecomm/v2/payments/UNIQUE-PAYMENT-REFERENCE/details \
+curl https://apitest.vipps.no/epayment/v1/payments/UNIQUE-PAYMENT-REFERENCE \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
 -H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
+-H "Merchant-Serial-Number: 123456" \
+-H "Vipps-System-Name: acme" \
+-H "Vipps-System-Version: 3.1.2" \
+-H "Vipps-System-Plugin-Name: acme-webshop" \
+-H "Vipps-System-Plugin-Version: 4.5.6" \
+-H "Idempotency-Key: 49ca711a-acee-4d01-993b-9487112e1def" \
+-X GET
+```
+
+</TabItem>
+</Tabs>
+
+### Step 6 - Get the user info
+
+Send request `Get Userinfo`.
+This uses [`GET:/vipps-userinfo-api/userinfo/{sub}`][userinfo-endpoint] with the `sub` variable from the previous call.
+
+<Tabs
+defaultValue="postman"
+groupId="sdk-choice"
+values={[
+{label: 'curl', value: 'curl'},
+{label: 'Postman', value: 'postman'},
+]}>
+<TabItem value="postman">
+
+```bash
+Send request Get payment details
+```
+
+</TabItem>
+<TabItem value="curl">
+
+```bash
+curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/{sub} \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
+-H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
+-H "Merchant-Serial-Number: 123456" \
+-H "Vipps-System-Name: acme" \
+-H "Vipps-System-Version: 3.1.2" \
+-H "Vipps-System-Plugin-Name: acme-webshop" \
+-H "Vipps-System-Plugin-Version: 4.5.6" \
+-H "Idempotency-Key: 49ca711a-acee-4d01-993b-9487112e1def" \
+-X GET
+```
+
+</TabItem>
+</Tabs>
+
+
+<details>
+<summary>Example response</summary>
+<div>
+
+```json
+{
+    "address": {
+        "address_type": "home",
+        "country": "NO",
+        "formatted": "BOKS 6300, ETTERSTAD\n0603\nOSLO\nNO",
+        "postal_code": "0603",
+        "region": "OSLO",
+        "street_address": "BOKS 6300, ETTERSTAD"
+    },
+    "birthdate": "1955-02-01",
+    "family_name": "User",
+    "given_name": "Test",
+    "name": "Test User",
+    "other_addresses": [],
+    "phone_number": "4791234568",
+    "sid": "687a31ad9ba1de74",
+    "sub": "9fe5d0e3-4702-4113-a154-90bc68063325"
+}
+```
+
+
+</div>
+</details>
+
+## Userinfo with Login API
+
+### Step 1 - Setup for Login API
+
+Same as [Setup for ePayment API](#step-1---setup-for-epayment-api) with addition of `redirect_uri`.
+
+The `redirect_uri` must be exactly the same as the one specified your sales unit.
+See [How to set up login on your sales unit](https://developer.vippsmobilepay.com/docs/vipps-developers/developer-resources/portal#how-to-setup-login-on-your-sales-unit).
+
+### Step 2 - Get OIDC Well known
+
+<Tabs
+defaultValue="postman"
+groupId="sdk-choice"
+values={[
+{label: 'curl', value: 'curl'},
+{label: 'Postman', value: 'postman'},
+]}>
+<TabItem value="postman">
+
+```bash
+Send Get OIDC well-known
+```
+
+</TabItem>
+<TabItem value="curl">
+
+```bash
+curl https://apitest.vipps.no/access-management-1.0/access/.well-known/openid-configuration \
 -H "Merchant-Serial-Number: 123456" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
@@ -220,14 +318,12 @@ curl https://apitest.vipps.no/ecomm/v2/payments/UNIQUE-PAYMENT-REFERENCE/details
 </Tabs>
 
 
-### Step 6 - Capture the payment
+### Step 3 - Log in
 
-After the goods or services have been delivered, you can capture the authorized
-amount either partially or fully:
-[`POST:/payments/{orderId}/capture`][capture-payment-endpoint].
+Run the URI that requests log-in and access to user information.
 
 <Tabs
-defaultValue="curl"
+defaultValue="postman"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -235,52 +331,95 @@ values={[
 ]}>
 <TabItem value="postman">
 
+In your active Postman environment, copy the value of key `start_login_uri` and paste it into the address field of any browser.
+
+
+</TabItem>
+<TabItem value="curl">
+
+Put together the URI in this format ([OAuth 2.0 Authorize](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/integration/#oauth-20-authorize)):
+
+```http
+https://apitest.vipps.no/access-management-1.0/access/oauth2/auth?client_id=YOUR-CLIENT-ID&response_type=code&scope=openid%20name%20phoneNumber%20address%20birthDate&state=8652682f-ba1d-4719-b1ec-8694ba97bde7&redirect_uri=http://localhost
+```
+Paste the URL into the address field of any browser.
+
+</TabItem>
+</Tabs>
+
+Finish the login.
+If you have not yet consented to sharing your user information, a new screen will be presented in the app requesting your consent.
+
+If you have already completed this process and selected *Remember me in browser* earlier, this will take you straight to the redirect URL.
+
+### Step 4 Get token
+
+On the redirect URL page, copy the `code` value out from the address field in the URL.
+
+<Tabs
+defaultValue="postman"
+groupId="sdk-choice"
+values={[
+{label: 'curl', value: 'curl'},
+{label: 'Postman', value: 'postman'},
+]}>
+<TabItem value="postman">
+
+
+Paste the code into the key `code` in the active Postman environment and then get the token.
+
 ```bash
-Send request Capture payment
+Send request Get token
 ```
 
 </TabItem>
 <TabItem value="curl">
 
+Use the `code` in the following command.
+You will also need to generate client authorization.
+
+The client credentials is a base 64 encoded string consisting of the client_id and secret issued by Vipps.
+
+Example in JavaScript:
+
+```javascript
+var client_id = 123456-test-4a3d-a47c-412136fd0871
+var client_secret = testdzlJbUZaM1lqODlnUUtrUHI=
+
+var wordArrayAzp = CryptoJS.enc.Utf8.parse(client_id + ":" + client_secret);
+var client_authorization = CryptoJS.enc.Base64.stringify(wordArrayAzp);
+```
+
+
 ```bash
-curl https://apitest.vipps.no/ecomm/v2/payments/UNIQUE-PAYMENT-REFERENCE/capture \
--H "Content-Type: application/json" \
--H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
--H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
+curl https://apitest.vipps.no/access-management-1.0/access/oauth2/token \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-H 'Authorization: Basic {client credentials}' \
 -H "Merchant-Serial-Number: 123456" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
 -H "Vipps-System-Plugin-Version: 4.5.6" \
--H "X-Request-Id: 49ca711a-acee-4d01-993b-9487112e1def" \
 -X POST \
--d '{
-    "merchantInfo": {
-        "merchantSerialNumber": "123456"
-    },
-    "transaction": {
-        "transactionText": "This transaction was captured."
-    }
-}'
+--data-urlencode 'grant_type=authorization_code' \
+--data-urlencode 'code=THE CODE FROM THE URL' \
+--data-urlencode 'redirect_uri=http://localhost'
 ```
+
+Copy the access token from the response.
 
 </TabItem>
 </Tabs>
 
-See
-[Common topics: Capture](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/reserve-and-capture#capture)
-for more details.
 
+### Step 5 - Get user info
 
-## Optional steps
+Send request `Get Userinfo`. This uses [`GET:/vipps-userinfo-api/userinfo/`][userinfo-endpoint-login].
 
-### Refund the payment
-
-To refund the captured amount, either partially or fully:
-[`POST:/payments/{orderId}/refund`][refund-payment-endpoint].
+Use the access token from the previous step.
 
 <Tabs
-defaultValue="curl"
+defaultValue="postman"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -289,14 +428,15 @@ values={[
 <TabItem value="postman">
 
 ```bash
-Send request Refund payment
+Send request Get userinfo
 ```
 
 </TabItem>
 <TabItem value="curl">
 
+
 ```bash
-curl https://apitest.vipps.no/ecomm/v2/payments/UNIQUE-PAYMENT-REFERENCE/refund \
+curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/ \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
 -H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
@@ -305,86 +445,24 @@ curl https://apitest.vipps.no/ecomm/v2/payments/UNIQUE-PAYMENT-REFERENCE/refund 
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
 -H "Vipps-System-Plugin-Version: 4.5.6" \
--H "X-Request-Id: 49ca711a-acee-4d01-993b-9487112e1def" \
--X POST \
--d '{
-  "merchantInfo": {
-        "merchantSerialNumber": "123456"
-    },
-    "transaction": {
-        "transactionText":"This payment was refunded."
-    }
-}'
+-H "Idempotency-Key: 49ca711a-acee-4d01-993b-9487112e1def" \
+-X GET
 ```
 
 </TabItem>
 </Tabs>
 
-See
-[Common topics: refund](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/refund)
-for more details.
 
-### Cancel the payment
 
-To cancel the payment, either fully or after a partial capture:
-[`POST:/payments/{orderId}/cancel`][cancel-payment-endpoint].
 
-<Tabs
-defaultValue="curl"
-groupId="sdk-choice"
-values={[
-{label: 'curl', value: 'curl'},
-{label: 'Postman', value: 'postman'},
-]}>
-<TabItem value="postman">
 
-```bash
-Send request Cancel payment
-```
 
-</TabItem>
-<TabItem value="curl">
 
-```bash
-curl https://apitest.vipps.no/ecomm/v2/payments/UNIQUE-PAYMENT-REFERENCE/cancel \
--H "Content-Type: application/json" \
--H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
--H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
--H "Merchant-Serial-Number: 123456" \
--H "Vipps-System-Name: acme" \
--H "Vipps-System-Version: 3.1.2" \
--H "Vipps-System-Plugin-Name: acme-webshop" \
--H "Vipps-System-Plugin-Version: 4.5.6" \
--X PUT \
--d '{
-  "merchantInfo": {
-        "merchantSerialNumber": "123456"
-    },
-    "transaction": {
-        "transactionText":"This payment was cancelled."
-    }
-}'
 
-```
-
-</TabItem>
-</Tabs>
-
-See
-[Common topics: Cancel](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/cancel)
-for more details.
-
-## Next Steps
-
-You will find more examples of eCom API requests in the
-[eCom API Postman collection](/tools/vipps-ecom-api-postman-collection.json).
-
-Experiment with these or go straight to the [eCom API Guide](vipps-ecom-api.md).
 
 
 [access-token-endpoint]: https://developer.vippsmobilepay.com/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost
-[create-payment-endpoint]: https://developer.vippsmobilepay.com/api/ecom/#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST
-[get-payment-endpoint]: https://developer.vippsmobilepay.com/api/ecom/#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET
-[capture-payment-endpoint]: https://developer.vippsmobilepay.com/api/ecom/#tag/Vipps-eCom-API/operation/capturePaymentUsingPOST
-[refund-payment-endpoint]: https://developer.vippsmobilepay.com/api/ecom/#tag/Vipps-eCom-API/operation/refundPaymentUsingPOST
-[cancel-payment-endpoint]: https://developer.vippsmobilepay.com/api/ecom/#tag/Vipps-eCom-API/operation/cancelPaymentRequestUsingPUT
+[create-payment-endpoint]: https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments/operation/createPayment
+[get-payment-endpoint]: https://developer.vippsmobilepay.com/api/epayment#tag/QueryPayments/operation/getPayment
+[userinfo-endpoint]: https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo
+[userinfo-endpoint-login]: https://developer.vippsmobilepay.com/api/userinfo/#operation/userinfoAuthorizationCode
