@@ -54,7 +54,7 @@ In Postman, tweak the environment with your own values (see
 * `Ocp-Apim-Subscription-Key` - Merchant subscription key.
 * `merchantSerialNumber` - Merchant ID.
 * `internationalMobileNumber` - The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
-* `mobileNumber` - (For Recurring, eCom, and Login API) The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
+* `mobileNumber` - (For Recurring and eCom) Your 8-digit mobile number, excluding the country code.
 
 For help using Postman, see
 [Quick start guides](https://developer.vippsmobilepay.com/docs/vipps-developers/quick-start-guides).
@@ -273,191 +273,13 @@ curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/{sub} \
 }
 ```
 
-
 </div>
 </details>
 
-## Userinfo with Login API
 
-### Step 1 - Setup for Login API
+## Next steps
 
-Same as [Setup for ePayment API](#step-1---setup-for-epayment-api) with addition of `redirect_uri`.
-
-The `redirect_uri` must be exactly the same as the one specified your sales unit.
-See [How to set up login on your sales unit](https://developer.vippsmobilepay.com/docs/vipps-developers/developer-resources/portal#how-to-setup-login-on-your-sales-unit).
-
-### Step 2 - Get OIDC Well known
-
-<Tabs
-defaultValue="postman"
-groupId="sdk-choice"
-values={[
-{label: 'curl', value: 'curl'},
-{label: 'Postman', value: 'postman'},
-]}>
-<TabItem value="postman">
-
-```bash
-Send Get OIDC well-known
-```
-
-</TabItem>
-<TabItem value="curl">
-
-```bash
-curl https://apitest.vipps.no/access-management-1.0/access/.well-known/openid-configuration \
--H "Merchant-Serial-Number: 123456" \
--H "Vipps-System-Name: acme" \
--H "Vipps-System-Version: 3.1.2" \
--H "Vipps-System-Plugin-Name: acme-webshop" \
--H "Vipps-System-Plugin-Version: 4.5.6" \
--X GET
-```
-
-</TabItem>
-</Tabs>
-
-
-### Step 3 - Log in
-
-Run the URI that requests log-in and access to user information.
-
-<Tabs
-defaultValue="postman"
-groupId="sdk-choice"
-values={[
-{label: 'curl', value: 'curl'},
-{label: 'Postman', value: 'postman'},
-]}>
-<TabItem value="postman">
-
-In your active Postman environment, copy the value of key `start_login_uri` and paste it into the address field of any browser.
-
-
-</TabItem>
-<TabItem value="curl">
-
-Put together the URI in this format ([OAuth 2.0 Authorize](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/integration/#oauth-20-authorize)):
-
-```http
-https://apitest.vipps.no/access-management-1.0/access/oauth2/auth?client_id=YOUR-CLIENT-ID&response_type=code&scope=openid%20name%20phoneNumber%20address%20birthDate&state=8652682f-ba1d-4719-b1ec-8694ba97bde7&redirect_uri=http://localhost
-```
-Paste the URL into the address field of any browser.
-
-</TabItem>
-</Tabs>
-
-Finish the login.
-If you have not yet consented to sharing your user information, a new screen will be presented in the app requesting your consent.
-
-If you have already completed this process and selected *Remember me in browser* earlier, this will take you straight to the redirect URL.
-
-### Step 4 Get token
-
-On the redirect URL page, copy the `code` value out from the address field in the URL.
-
-<Tabs
-defaultValue="postman"
-groupId="sdk-choice"
-values={[
-{label: 'curl', value: 'curl'},
-{label: 'Postman', value: 'postman'},
-]}>
-<TabItem value="postman">
-
-
-Paste the code into the key `code` in the active Postman environment and then get the token.
-
-```bash
-Send request Get token
-```
-
-</TabItem>
-<TabItem value="curl">
-
-Use the `code` in the following command.
-You will also need to generate client authorization.
-
-The client credentials is a base 64 encoded string consisting of the client_id and secret issued by Vipps.
-
-Example in JavaScript:
-
-```javascript
-var client_id = 123456-test-4a3d-a47c-412136fd0871
-var client_secret = testdzlJbUZaM1lqODlnUUtrUHI=
-
-var wordArrayAzp = CryptoJS.enc.Utf8.parse(client_id + ":" + client_secret);
-var client_authorization = CryptoJS.enc.Base64.stringify(wordArrayAzp);
-```
-
-
-```bash
-curl https://apitest.vipps.no/access-management-1.0/access/oauth2/token \
--H 'Content-Type: application/x-www-form-urlencoded' \
--H 'Authorization: Basic {client credentials}' \
--H "Merchant-Serial-Number: 123456" \
--H "Vipps-System-Name: acme" \
--H "Vipps-System-Version: 3.1.2" \
--H "Vipps-System-Plugin-Name: acme-webshop" \
--H "Vipps-System-Plugin-Version: 4.5.6" \
--X POST \
---data-urlencode 'grant_type=authorization_code' \
---data-urlencode 'code=THE CODE FROM THE URL' \
---data-urlencode 'redirect_uri=http://localhost'
-```
-
-Copy the access token from the response.
-
-</TabItem>
-</Tabs>
-
-
-### Step 5 - Get user info
-
-Send request `Get Userinfo`. This uses [`GET:/vipps-userinfo-api/userinfo/`][userinfo-endpoint-login].
-
-Use the access token from the previous step.
-
-<Tabs
-defaultValue="postman"
-groupId="sdk-choice"
-values={[
-{label: 'curl', value: 'curl'},
-{label: 'Postman', value: 'postman'},
-]}>
-<TabItem value="postman">
-
-```bash
-Send request Get userinfo
-```
-
-</TabItem>
-<TabItem value="curl">
-
-
-```bash
-curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/ \
--H "Content-Type: application/json" \
--H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
--H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
--H "Merchant-Serial-Number: 123456" \
--H "Vipps-System-Name: acme" \
--H "Vipps-System-Version: 3.1.2" \
--H "Vipps-System-Plugin-Name: acme-webshop" \
--H "Vipps-System-Plugin-Version: 4.5.6" \
--H "Idempotency-Key: 49ca711a-acee-4d01-993b-9487112e1def" \
--X GET
-```
-
-</TabItem>
-</Tabs>
-
-
-
-
-
-
-
+See the [API guide](./README.md).
 
 
 
@@ -465,4 +287,3 @@ curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/ \
 [create-payment-endpoint]: https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments/operation/createPayment
 [get-payment-endpoint]: https://developer.vippsmobilepay.com/api/epayment#tag/QueryPayments/operation/getPayment
 [userinfo-endpoint]: https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo
-[userinfo-endpoint-login]: https://developer.vippsmobilepay.com/api/userinfo/#operation/userinfoAuthorizationCode
