@@ -292,7 +292,7 @@ components:
             number, but no prefix.
             See https://en.wikipedia.org/wiki/MSISDN
           type: string
-          example: '474791234567'
+          example: '4791234567'
           pattern: '^\d{15}$'
         sid:
           description: |-
