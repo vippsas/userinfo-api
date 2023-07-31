@@ -26,11 +26,9 @@ your test credentials from the merchant portal, as described in the
 **Important:** The examples use standard example values that you must change to
 use *your* values. This includes API keys, HTTP headers, reference, etc.
 
-## Userinfo with ePayment API
-
 This example is for ePayment, but can be applied to the Recurring and eCom APIs.
 
-### Step 1 - Setup for ePayment API
+### Step 1 - Setup
 
 <Tabs
 defaultValue="curl"
@@ -54,7 +52,6 @@ In Postman, tweak the environment with your own values (see
 * `Ocp-Apim-Subscription-Key` - Merchant subscription key.
 * `merchantSerialNumber` - Merchant ID.
 * `internationalMobileNumber` - The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
-* `mobileNumber` - (For Recurring and eCom) Your 8-digit mobile number, excluding the country code.
 
 For help using Postman, see
 [Quick start guides](https://developer.vippsmobilepay.com/docs/vipps-developers/quick-start-guides).
@@ -67,7 +64,7 @@ No setup needed :)
 </TabItem>
 </Tabs>
 
-### Step 2 - Authentication for ePayment API
+### Step 2 - Authentication
 
 Get an `access_token` from the
 [Access token API](https://developer.vippsmobilepay.com/docs/APIs/access-token-api):
@@ -109,7 +106,7 @@ curl https://apitest.vipps.no/accessToken/get \
 
 The property `access_token` should be used for all other API requests in the `Authorization` header as the Bearer token.
 
-### Step 3 - A simple payment with profile flow
+### Step 3 - Request a simple payment with profile flow
 
 Provide the `scope` object in the [`POST:/payments`][create-payment-endpoint] call. This contains the information types that you want access to, separated by spaces (e.g., "name address email phoneNumber birthDate").
 
@@ -152,9 +149,9 @@ curl https://apitest.vipps.no/epayment/v1/payments \
     "customer": {
         "phoneNumber": 4791234567
     },
-    "reference": 2486791690535039148,
+    "reference": UNIQUE-PAYMENT-REFERENCE,
     "userFlow": "WEB_REDIRECT",
-    "returnUrl": "https://example.com/redirect?reference=2486791690535039148",
+    "returnUrl": "https://example.com/redirect?reference=UNIQUE-PAYMENT-REFERENCE",
     "paymentDescription": "Purchase of socks",
     "profile": {
         "scope": "name phoneNumber address birthDate"
@@ -167,14 +164,17 @@ curl https://apitest.vipps.no/epayment/v1/payments \
 
 ### Step 4 - Complete the payment
 
-Open the link that appears, and it will take you to a landing page where you can enter your phone number.
-Open the Vipps app and complete the payment.
+Open the `redirectUrl` link that is returned, and it will take you to the
+[landing page](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/landing-page/).
+The phone number of your test user should already be filled in, so you only have to click *Next*.
+
+You will be presented with the payment in the app, where you can complete the payment.
 
 ### Step 5 - Get the sub for the payment
 
-The unique identifier `sub` can be retrieved in the payment details
-when calling the
-[`GET:/payments/{reference}`][get-payment-endpoint] endpoint.
+Call the [`GET:/payments/{reference}`][get-payment-endpoint] endpoint.
+The unique identifier, `sub`, can be retrieved in the payment details under `profile`.
+
 
 <Tabs
 defaultValue="postman"
@@ -202,7 +202,6 @@ curl https://apitest.vipps.no/epayment/v1/payments/UNIQUE-PAYMENT-REFERENCE \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
 -H "Vipps-System-Plugin-Version: 4.5.6" \
--H "Idempotency-Key: 49ca711a-acee-4d01-993b-9487112e1def" \
 -X GET
 ```
 
@@ -211,8 +210,7 @@ curl https://apitest.vipps.no/epayment/v1/payments/UNIQUE-PAYMENT-REFERENCE \
 
 ### Step 6 - Get the user info
 
-Send request `Get Userinfo`.
-This uses [`GET:/vipps-userinfo-api/userinfo/{sub}`][userinfo-endpoint] with the `sub` variable from the previous call.
+Send request [`GET:/vipps-userinfo-api/userinfo/{sub}`][userinfo-endpoint] with the `sub` variable from the previous call.
 
 <Tabs
 defaultValue="postman"
@@ -224,7 +222,7 @@ values={[
 <TabItem value="postman">
 
 ```bash
-Send request Get payment details
+Send request Get Userinfo
 ```
 
 </TabItem>
@@ -279,7 +277,7 @@ curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/{sub} \
 
 ## Next steps
 
-See the [API guide](./README.md).
+To learn more about this API, visit the [Userinfo API guide](./README.md).
 
 
 
