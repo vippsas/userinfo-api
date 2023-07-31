@@ -19,7 +19,7 @@ For more common questions, see:
 
 ## What is the `sub`?
 
-The `sub` is a unique user identifier for a Vipps user, related to that user's consent
+The `sub` is a unique user identifier for a Vipps or MobilePay user, related to that user's consent
 to share information with a specific MSN (sales unit).
 
 The `sub` is *based on* the user's national identity number ("fødselsnummer" in Norway),
@@ -35,8 +35,8 @@ The `sub` will not change if a user removes their consents, logs in again, and r
 
 **Please note:** There are some special cases where the `sub` will change for a user:
 
-* If a user deletes the Vipps Profile and creates a new one.
-* If a user changes the phone number (in practice: Creates a new Vipps user)
+* If a user deletes the Vipps or MobilePay profile and creates a new one.
+* If a user changes the phone number (in practice: Creates a new user)
 
 ## Why can I get userinfo after the user has revoked consent?
 
@@ -61,7 +61,7 @@ If the merchant needs an updated address for the user, the merchant must ask the
 user for a new consent.
 
 With the
-[Vipps Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
+[Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
 the merchant can retrieve updated information every time the user logs in.
 
 ## How can we detect users' consent removal?
