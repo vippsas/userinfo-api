@@ -4,7 +4,7 @@ info:
     Vipps offers the possibility for merchants to ask for the user's profile information as part of the payment flow.
     This follows the [OIDC Standard: UserInfo endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
     See the [Userinfo API guide](https://developer.vippsmobilepay.com/docs/APIs/userinfo-api) for a description.
-  version: 2.0.2
+  version: 2.0.3
   title: Vipps Userinfo API
 servers:
   - url: https://api.vipps.no
@@ -70,9 +70,11 @@ paths:
     get:
       summary: Get Userinfo in the Login API flow
       description: >-
-        This endpoint is only for use in the [Login API in browser flow](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/integration#userinfo).
+        This endpoint is only for use in the
+        [Login API in browser flow](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/integration#userinfo).
         It returns the payload with the information that the user has consented to share.
-        Find more info on the `/userinfo` endpoint at the [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
+        Find more info on the `/userinfo` endpoint at the
+        [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
       operationId: userinfoAuthorizationCode
       parameters:
         - $ref: "#/components/parameters/Authorization"
@@ -128,9 +130,8 @@ components:
       description: >-
         The access token is a base64-encoded string that is required for all API calls.
         It is a JWT (JSON Web Token).
-        The access token is fetched from the
-            [`POST:/accesstoken/get`](https://developer.vippsmobilepay.com/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost)
-            endpoint.
+        The access token is fetched from
+        [`POST:/accesstoken/get`](https://developer.vippsmobilepay.com/api/access-token#tag/Authorization-Service/operation/fetchAuthorizationTokenUsingPost).
         It is valid for 1 hour in the test environment and 24 hours in the production environment.
       required: true
       schema:
@@ -205,7 +206,7 @@ components:
         type: string
         maxLength: 30
       example: "1.2.1"
-      
+
     sub:
       name: sub
       in: path
@@ -257,21 +258,35 @@ components:
           type: string
           example: Ada Lovelace
         nin:
-          description: 'National identity number'
+          description: |-
+            National identity number.
+            For Norway this is the "fødselsnummer": 11 digits.
+            The format is "YYYYMMDD" + five digits.
+            See https://www.skatteetaten.no/en/person/foreign/norwegian-identification-number/national-identity-number/
           type: string
           example: '09057517287'
           pattern: '^\d{11}$'
         phone_number:
-          description: 'The user''s telephone number on MSISDN format: Includes country code, but does not start with `+`. Up to 15 digits.'
+          description: |-
+            The user's telephone number.
+            The format is MSISDN: Digits only: Country code and subscriber
+            number, but no prefix.
+            See https://en.wikipedia.org/wiki/MSISDN
           type: string
-          example: '47912345678'
+          example: '4791234567'
           pattern: '^\d{15}$'
         sid:
-          description: 'Session identifier - This represents a Session of a User Agent or device. Currently not in use'
+          description: |-
+            Session identifier: This represents a session of a User Agent or
+            device. Currently not in use.
           type: string
           example: '7d78a726-af92-499e-b857-de263ef9a969'
         sub:
-          description: 'Subject - Identifier for the user'
+          description: |-
+            Subject: Unique identifier for the user.
+            The sub is based on the user's national identity number (NIN) and
+            does not change (except in very special cases).
+            The `sub` is the same when the user logs in again and re-consents.
           type: string
           example: 'c06c4afe-d9e1-4c5d-939a-177d752a0944'
     UserinfoAccountInfo:
@@ -280,30 +295,32 @@ components:
       deprecated: true
       properties:
         account_name:
-          description: "User''s defined name for account"
+          description: "The user''s defined name for account"
           type: string
           example: "Savings account"
         account_number:
-          description: "User''s account number"
+          description: "The user''s account number"
           type: string
           example: 86011117947
         bank_name:
-          description: "Bank connected to the account number"
+          description: "The bank connected to the account number"
           type: string
           example: "ACME Bank"
     UserinfoAddress:
       type: object
       properties:
         address_type:
-          description: 'Address type is either home, work or other'
+          description: |-
+            Address type is either `home`, `work` or `other`.
           type: string
           example: home
         country:
           description: 'Two letter country code'
           type: string
+          format: "^[A-Z]{2}$"
           example: "NO"
         default:
-          description: 'If this is default address'
+          description: 'True if this is the default address'
           type: boolean
           example: true
         formatted:
@@ -330,18 +347,23 @@ components:
       properties:
         type:
           type: string
+          description: A URI reference that identifies the problem type.
           example: https://example.com/validation-error
         title:
           type: string
+          description: "A short, human-readable summary of the problem type.  It will not change from occurrence to occurrence of the problem."
           example: Your request parameters didn't validate.
         status:
           type: string
-          example: TODO
+          description: The HTTP status code.
+          example: 400
         detail:
           type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
           example: The request body contains one or more errors
         instance:
           type: string
+          description: An id that can help when troubleshooting.
           example: 123e4567-e89b-12d3-a456-426655440000
         extraInfo:
           type: object
