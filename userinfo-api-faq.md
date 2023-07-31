@@ -12,11 +12,10 @@ END_METADATA -->
 # Frequently asked questions
 
 Here are the Userinfo API Frequently Asked Questions (FAQ).
-See the [Vipps Userinfo API](README.md) for all the technical details.
 
-For more common Vipps questions, see:
+For more common questions, see:
 
-* [Vipps API General FAQ](https://developer.vippsmobilepay.com/docs/vipps-developers/faqs)
+* [Vipps MobilePay General FAQ](https://developer.vippsmobilepay.com/docs/vipps-developers/faqs)
 
 ## What is the `sub`?
 
