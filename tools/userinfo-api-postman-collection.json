@@ -1,0 +1,1154 @@
+{
+	"info": {
+		"_postman_id": "b9cc1ac1-32ff-4ba4-97fe-d7f88e41bb7a",
+		"name": "Userinfo API - Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ePayment API",
+			"item": [
+				{
+					"name": "Get access token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/accessToken/get",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessToken",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create payment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid')\r",
+									"pm.environment.set(\"idempotency_key\", uuid.v4())\r",
+									"pm.environment.set('reference',pm.environment.get('merchantSerialNumber') + (new Date()).getTime());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200) { \r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set('vippsLandingPageURL', jsonData.url);\r",
+									"    var str = jsonData.url\r",
+									"    var str2 = str.split('=', 3)[2]\r",
+									"    pm.environment.set('payment_token', str2);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							},
+							{
+								"description": "(Required) APIM Subscription Key",
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "(Required) Idempotency key for the request, ensures idempotent actions.",
+								"key": "Idempotency-Key",
+								"value": "{{idempotency_key}}"
+							},
+							{
+								"description": "(Required) The Sales unit's MSN: The unique identifier for the sales unit.",
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": {\n        \"value\": {{amount}},\n        \"currency\": \"{{currency}}\"\n    },\n    \"paymentMethod\": {\n        \"type\": \"WALLET\"\n    },\n    \"customer\": {\n        \"phoneNumber\": {{internationalMobileNumber}}\n    },\n    \"reference\": {{reference}},\n    \"userFlow\": \"WEB_REDIRECT\",\n    \"returnUrl\": \"https://example.com/redirect?reference={{reference}}\",\n    \"paymentDescription\": \"Purchase of socks\",\n    \"profile\": {\n        \"scope\": \"name phoneNumber address birthDate\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/epayment/v1/payments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"epayment",
+								"v1",
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "Get payment details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"sub\", jsonData?.profile?.sub);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							},
+							{
+								"description": "(Required) The Sales unit's MSN: The unique identifier for the sales unit.",
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}"
+							},
+							{
+								"description": "(Required) APIM Subscription Key",
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/epayment/v1/payments/{{reference}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"epayment",
+								"v1",
+								"payments",
+								"{{reference}}"
+							]
+						},
+						"description": "Get a payment object by its `reference` id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get userinfo",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/vipps-userinfo-api/userinfo/{{sub}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vipps-userinfo-api",
+								"userinfo",
+								"{{sub}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "eCom API",
+			"item": [
+				{
+					"name": "Get access token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/accessToken/get",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessToken",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create payment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set('orderId',pm.environment.get('merchantSerialNumber') + (new Date()).getTime());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200) { ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set('vippsLandingPageURL', jsonData.url);",
+									"    var str = jsonData.url",
+									"    var str2 = str.split('=', 3)[2]",
+									"    pm.environment.set('payment_token', str2);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"type": "text",
+								"value": "{{merchantSerialNumber}}"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"type": "text",
+								"value": "{{vipps_system_name}}"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"type": "text",
+								"value": "{{vipps_system_version}}"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"type": "text",
+								"value": "{{vipps_system_plugin_name}}"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"type": "text",
+								"value": "{{vipps_system_plugin_version}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchantInfo\": {\n    \"authToken\": \"{{$guid}}\",\n    \"callbackPrefix\":\"{{callbackPrefix}}\",\n    \"fallBack\": \"{{fallBack}}\",\n    \"merchantSerialNumber\": \"{{merchantSerialNumber}}\"\n  },\n  \"customerInfo\": {\n    \"mobileNumber\": \"{{mobileNumber}}\"\n  },\n  \"transaction\": {\n    \"amount\": {{amount}},\n    \"orderId\": \"{{orderId}}\",\n    \"transactionText\": \"{{transactionTextInitiate}}\",\n    \"skipLandingPage\": false,\n    \"scope\": \"address name email birthDate phoneNumber\"\n}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/ecomm/v2/payments/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ecomm",
+								"v2",
+								"payments",
+								""
+							]
+						},
+						"description": "A payment that enables the possibility to fetch profile information for a user.\n\nIf the user has not already consented to sharing information from Vipps to the merchant, they will be asked for any remaining consents before completing the payment flow."
+					},
+					"response": []
+				},
+				{
+					"name": "Get payment details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"sub\", jsonData.sub);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "text"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "text"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "text"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "text"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/ecomm/v2/payments/{{orderId}}/details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ecomm",
+								"v2",
+								"payments",
+								"{{orderId}}",
+								"details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get userinfo",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/vipps-userinfo-api/userinfo/{{sub}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vipps-userinfo-api",
+								"userinfo",
+								"{{sub}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recurring API",
+			"item": [
+				{
+					"name": "Get access token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/accessToken/get",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessToken",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create agreement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"agreementId\", jsonData.agreementId)",
+									"var str = jsonData.vippsConfirmationUrl",
+									"var str2 = str.split('=', 3)[2]",
+									"postman.setEnvironmentVariable(\"landing_page_url\", str2);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer {{access_token}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{idempotency_key}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"interval\": {\n    \"unit\" : \"{{interval}}\",\n    \"count\": \"{{intervalCount}}\"\n },\n \"pricing\": {\n    \"amount\": {{price}},\n    \"currency\": \"NOK\"\n },\n \"merchantRedirectUrl\": \"{{merchantRedirectUrl}}\",\n \"merchantAgreementUrl\": \"{{merchantAgreementUrl}}\",\n \"phoneNumber\": \"{{mobileNumber}}\",\n \"scope\": \"address name email birthDate phoneNumber\",\n \"productName\": \"{{productName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recurring/v3/agreements",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recurring",
+								"v3",
+								"agreements"
+							]
+						},
+						"description": "Drafts an agreement that can be approved by end user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get agreement details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"sub\", jsonData.sub);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/recurring/v3/agreements/{{agreementId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recurring",
+								"v3",
+								"agreements",
+								"{{agreementId}}"
+							]
+						},
+						"description": "GET one agreement (script based on last created Agreement)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get userinfo",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/vipps-userinfo-api/userinfo/{{sub}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vipps-userinfo-api",
+								"userinfo",
+								"{{sub}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login API",
+			"item": [
+				{
+					"name": "Get OIDC well-known",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid');",
+									"var url = require('url');",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"//pm.environment.set(\"token_endpoint\", jsonData.token_endpoint);",
+									"//pm.environment.set(\"userinfo_endpoint\", jsonData.userinfo_endpoint);",
+									"//pm.environment.set(\"init_ciba_endpoint\", jsonData.backchannel_authentication_endpoint);",
+									"",
+									"var start_login_uri = ",
+									"    jsonData.authorization_endpoint ",
+									"        + \"?client_id=\" + pm.variables.get(\"client_id\")",
+									"        + \"&response_type=\" + pm.variables.get(\"response_type\")",
+									"        + \"&scope=\" + pm.variables.get(\"scope\")",
+									"        + \"&state=\" + uuid.v4()",
+									"        + \"&redirect_uri=\" + pm.variables.get(\"redirect_uri\");",
+									"",
+									"pm.environment.set(\"start_login_uri\", url.format(start_login_uri));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/access-management-1.0/access/.well-known/openid-configuration",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"access-management-1.0",
+								"access",
+								".well-known",
+								"openid-configuration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var client_id = pm.environment.get(\"client_id\");",
+									"var client_secret = pm.environment.get(\"client_secret\");",
+									"",
+									"var wordArrayAzp = CryptoJS.enc.Utf8.parse(client_id + \":\" + client_secret);",
+									"var client_authorization = CryptoJS.enc.Base64.stringify(wordArrayAzp);",
+									"",
+									"pm.environment.set(\"client_authorization\", client_authorization);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var access_token = pm.response.json().access_token;",
+									"",
+									"pm.environment.set(\"access_token\", access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic {{client_authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{code}}",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "{{redirect_uri}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/access-management-1.0/access/oauth2/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"access-management-1.0",
+								"access",
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get userinfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Merchant-Serial-Number",
+								"value": "{{merchantSerialNumber}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Name",
+								"value": "{{vipps_system_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Version",
+								"value": "{{vipps_system_version}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Name",
+								"value": "{{vipps_system_plugin_name}}",
+								"type": "default"
+							},
+							{
+								"key": "Vipps-System-Plugin-Version",
+								"value": "{{vipps_system_plugin_version}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/vipps-userinfo-api/userinfo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vipps-userinfo-api",
+								"userinfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
