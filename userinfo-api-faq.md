@@ -15,7 +15,7 @@ Here are the Userinfo API Frequently Asked Questions (FAQ).
 
 For more common questions, see:
 
-* [Vipps MobilePay General FAQ](https://developer.vippsmobilepay.com/docs/vipps-developers/faqs)
+* [Vipps MobilePay General FAQ](https://developer.vippsmobilepay.com/docs/faqs)
 
 ## What is the `sub`?
 

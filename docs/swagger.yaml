@@ -170,7 +170,7 @@ components:
       description: |-
         The name of the ecommerce solution.
         One word in lowercase letters is good.
-        See [http-headers](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/http-headers).
+        See [http-headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers).
       schema:
         type: string
         maxLength: 30
@@ -180,7 +180,7 @@ components:
       in: header
       description: |-
         The version number of the ecommerce solution.
-        See [http-headers](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/http-headers).
+        See [http-headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers).
       schema:
         type: string
         maxLength: 30
@@ -191,7 +191,7 @@ components:
       description: |-
         The name of the ecommerce plugin (if applicable).
         One word in lowercase letters is good.
-        See [http-headers](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/http-headers).
+        See [http-headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers).
       schema:
         type: string
         maxLength: 30
@@ -201,7 +201,7 @@ components:
       in: header
       description: |-
         The version number of the ecommerce plugin (if applicable).
-        See [http-headers](https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/http-headers).
+        See [http-headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers).
       schema:
         type: string
         maxLength: 30
@@ -343,7 +343,7 @@ components:
       type: object
       description: |-
         The standard Error object.
-        See https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/errors
+        See https://developer.vippsmobilepay.com/docs/common-topics/errors
       properties:
         type:
           type: string
