@@ -255,17 +255,17 @@ curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/{sub} \
     "address": {
         "address_type": "home",
         "country": "NO",
-        "formatted": "BOKS 6300, ETTERSTAD\n0603\nOSLO\nNO",
-        "postal_code": "0603",
+        "formatted": "Robert Levins gate 5, 0154\nOSLO\nNO",
+        "postal_code": "0154",
         "region": "OSLO",
-        "street_address": "BOKS 6300, ETTERSTAD"
+        "street_address": "Robert Levins gate 5"
     },
-    "birthdate": "1955-02-01",
+    "birthdate": "2000-02-01",
     "family_name": "User",
     "given_name": "Test",
     "name": "Test User",
     "other_addresses": [],
-    "phone_number": "4791234568",
+    "phone_number": "4791234567",
     "sid": "687a31ad9ba1de74",
     "sub": "9fe5d0e3-4702-4113-a154-90bc68063325"
 }
