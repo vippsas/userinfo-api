@@ -39,7 +39,9 @@ values={[
 ]}>
 <TabItem value="postman">
 
-Import the following files into Postman:
+**Please note:** Postman is discontinuing their offline version. Use only your test keys and delete them after testing. Ensure that your company allows for cloud use before continuing.
+
+If you wish to use Postman, import the following files:
 
 * [Userinfo API Postman collection](/tools/userinfo-api-postman-collection.json)
 * [Global Postman environment](https://github.com/vippsas/vipps-developers/blob/master/tools/vipps-api-global-postman-environment.json)
