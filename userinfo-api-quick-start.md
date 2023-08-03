@@ -55,9 +55,6 @@ In Postman, tweak the environment with your own values (see
 * `merchantSerialNumber` - Merchant ID.
 * `internationalMobileNumber` - The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
 
-For help using Postman, see
-[Quick start guides](https://developer.vippsmobilepay.com/docs/quick-start-guides).
-
 </TabItem>
 <TabItem value="curl">
 
