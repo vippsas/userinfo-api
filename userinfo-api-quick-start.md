@@ -71,7 +71,7 @@ Get an `access_token` from the
 This provides you with access to the API.
 
 <Tabs
-defaultValue="postman"
+defaultValue="curl"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -110,7 +110,7 @@ The property `access_token` should be used for all other API requests in the `Au
 Provide the `scope` object in the [`POST:/payments`][create-payment-endpoint] call. This contains the information types that you want access to, separated by spaces (e.g., "name address email phoneNumber birthDate").
 
 <Tabs
-defaultValue="postman"
+defaultValue="curl"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -176,7 +176,7 @@ The unique identifier, `sub`, can be retrieved in the payment details under `pro
 
 
 <Tabs
-defaultValue="postman"
+defaultValue="curl"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
@@ -212,7 +212,7 @@ curl https://apitest.vipps.no/epayment/v1/payments/UNIQUE-PAYMENT-REFERENCE \
 Send request [`GET:/vipps-userinfo-api/userinfo/{sub}`][userinfo-endpoint] with the `sub` variable from the previous call.
 
 <Tabs
-defaultValue="postman"
+defaultValue="curl"
 groupId="sdk-choice"
 values={[
 {label: 'curl', value: 'curl'},
