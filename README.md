@@ -14,9 +14,11 @@ END_METADATA -->
 
 Use the Userinfo API to get consent and access to data from your users.
 
+* [API quick start](userinfo-api-quick-start.md): Run the basic examples in curl or Postman.
+* [API guide](userinfo-api-guide.md): Learn about the Userinfo API features.
+* [API FAQ](userinfo-api-faq.md): Look for your question among those people have asked before.
+* [API reference](https://developer.vippsmobilepay.com/api/userinfo): Go straight to the endpoint specifications.
 
-* [API quick start](userinfo-api-quick-start.md): Quick start to getting user info.
-* [API Guide](userinfo-api-guide.md): Developer guide for the Userinfo API.
-* [API FAQ](userinfo-api-faq.md): Userinfo API FAQ.
-* [API Reference](https://developer.vippsmobilepay.com/api/userinfo): Userinfo API Reference Specifications.
-
+If you're new to the platform, see
+[Getting started](https://developer.vippsmobilepay.com/docs/getting-started/)
+for information about API keys, product activation, and the test environment.
