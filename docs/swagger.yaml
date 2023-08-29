@@ -220,7 +220,10 @@ components:
       type: object
       properties:
         accounts:
-          description: 'Contains an array with the user''s bank accounts registered in the Vipps app'
+          description: |-
+            Contains an array with the user''s bank accounts registered in the app.
+            Although this feature is now deprecated, it will remain available to merchants and partners who entered
+            into an agreement to use it prior to deprecation.
           deprecated: true
           type: array
           items:
@@ -291,7 +294,10 @@ components:
           example: 'c06c4afe-d9e1-4c5d-939a-177d752a0944'
     UserinfoAccountInfo:
       type: object
-      description: Bank account
+      description: |-
+        Bank account.        
+        Although this feature is now deprecated, it will remain available to merchants and partners who entered
+        into an agreement to use it prior to deprecation.
       deprecated: true
       properties:
         account_name:
