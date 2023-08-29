@@ -222,8 +222,8 @@ components:
         accounts:
           description: |-
             Contains an array with the user''s bank accounts registered in the app.
-            This is deprecated, but will still be available for merchants and partners
-            that entered an agreement to use this before it was deprecated.
+            Although this feature is now deprecated, it will remain available to merchants and partners who entered
+            into an agreement to use it prior to deprecation.
           deprecated: true
           type: array
           items:
@@ -295,9 +295,9 @@ components:
     UserinfoAccountInfo:
       type: object
       description: |-
-        Bank account.
-        This is deprecated, but will still be available for merchants and partners
-        that entered an agreement to use this before it was deprecated.
+        Bank account.        
+        Although this feature is now deprecated, it will remain available to merchants and partners who entered
+        into an agreement to use it prior to deprecation.
       deprecated: true
       properties:
         account_name:
