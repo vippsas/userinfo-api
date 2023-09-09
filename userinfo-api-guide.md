@@ -65,8 +65,26 @@ The `scope` can include any of the values above, separated by a space. Examples:
 * `name birthDate`
 * `name email nin`
 
-## Userinfo flow
+## Flows
 
+There are two main flows for getting user info:
+
+* Through the payment APIs
+* Through the Login API
+
+
+### Userinfo through payment APIs
+
+Through the following payment APIs, you can request the user's consent to share their information:
+
+   * ePayment API:
+     [`POST:/epayment/v1/payments`](https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments)
+   * Recurring API:
+     [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
+   * eCom API:
+     [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST)
+
+     
 This is an illustration of a consent card and a payment screen.
 The user must complete both screens before the merchant can gain access to their profile information.
 It is not possible for the user to complete the payment without these steps.
@@ -99,7 +117,7 @@ sequenceDiagram
     Merchant ->> Merchant : Handle session result
 ```
 
-## Userinfo call-by-call guide
+#### Call-by-call guide for payment flow
 
 Scenario: Complete a payment and get the user's name and phone number.
 
@@ -172,7 +190,8 @@ for the standard headers that should be included.
    "sub": "c06c4afe-d9e1-4c5d-939a-177d752a0944",
    ```
 
-   Retrieve the `sub` by calling the API endpoint that provides information about the payment or agreement. For example:
+   Retrieve the `sub` by calling the API endpoint that provides information about the payment or agreement.
+   For example:
 
    * ePayment API:
      [`GET:/epayment/v1/payments/{reference}`](https://developer.vippsmobilepay.com/api/epayment#tag/QueryPayments/operation/getPayment)
@@ -204,11 +223,15 @@ for the standard headers that should be included.
    [Polling guidelines](https://developer.vippsmobilepay.com/docs/common-topics/polling-guidelines)
    for more recommendations.
 
-## Example Userinfo request
+
+
+<details>
+<summary>Example request</summary>
+<div>
+
 
 This is an example based on the [Recurring API](https://developer.vippsmobilepay.com/docs/APIs/recurring-api/vipps-recurring-api#userinfo).
 
-### Request
 
 See [HTTP headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers) for additional standard headers that should be included.
 
@@ -238,7 +261,7 @@ For example:
 }
 ```
 
-**Example response from a successful request:**
+Response:
 
 ```json
 {
@@ -288,7 +311,10 @@ For example:
 }
 ```
 
-## Time limit
+</div>
+</details>
+
+#### Time limit
 
 It is recommended to get the user's information directly after
 completing the transaction.
@@ -305,11 +331,16 @@ transaction and the fetching of the profile data.
 If you attempt to retrieve the user's information after 168 hours, you will
 get an error.
 
+
+<details>
+<summary>Example response after expiration</summary>
+<div>
+
 If you use the
 [eCom API](https://developer.vippsmobilepay.com/docs/APIs/ecom-api)
 and
 [`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET)
-after 168 hours, the response will not contain the user's information, but instead:
+after 168 hours, the response will not contain the user's information.
 
 ```json
 "userDetails": {
@@ -321,3 +352,30 @@ after 168 hours, the response will not contain the user's information, but inste
   "userId": "[Expired]"
 }
 ```
+
+</div>
+</details>
+
+
+### Userinfo through Login API
+
+Getting user consent through the Login API requires doing the full log-in flow, as described in the [Login API guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/).
+
+Once the user is logged in, request consent with [`GET:/vipps-userinfo-api/userinfo/`](https://developer.vippsmobilepay.com/api/userinfo/#operation/userinfoAuthorizationCode).
+
+Provide the access token retrieved during the login session.
+
+```bash
+curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/ \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
+-H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
+-H "Merchant-Serial-Number: 123456" \
+-H "Vipps-System-Name: acme" \
+-H "Vipps-System-Version: 3.1.2" \
+-H "Vipps-System-Plugin-Name: acme-webshop" \
+-H "Vipps-System-Plugin-Version: 4.5.6" \
+-X GET
+```
+
+To see the full login flow, see the [Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-quick-start/).

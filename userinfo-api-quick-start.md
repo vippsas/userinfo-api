@@ -26,7 +26,11 @@ your test credentials from the merchant portal, as described in the
 **Important:** The examples use standard example values that you must change to
 use *your* values. This includes API keys, HTTP headers, reference, etc.
 
-This example is for ePayment, but can be applied to the Recurring and eCom APIs.
+This example is for the [payment flow](userinfo-api-guide.md#userinfo-through-payment-apis)
+using the ePayment API, but it can be applied to the Recurring and eCom APIs.
+
+To see a quick start for the login flow, see the [Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-quick-start/).
+
 
 ### Step 1 - Setup
 
