@@ -19,28 +19,11 @@ For more common questions, see:
 
 ## What is the `sub`?
 
-The `sub` is a unique user identifier for a Vipps or MobilePay user, related to that user's consent
-to share information with a specific MSN (sales unit).
-
-The `sub` is *based on* the user's national identity number ("fødselsnummer" in Norway),
-but  is not a replacement for NIN (National Identity Number) or any other unique identifier
-for the user.
-
-The `sub` is unique for each MSN (sales unit).
-A user may have many `sub`s for the same merchant: One for each of
-the merchant's MSNs (sales units).
-You cannot combine the `sub` for one MSN and the API keys for a different MSN.
-
-The `sub` will not change if a user removes their consents, logs in again, and re-consents.
-
-**Please note:** There are some special cases where the `sub` will change for a user:
-
-* If a user deletes the Vipps or MobilePay profile and creates a new one.
-* If a user changes the phone number (in practice: Creates a new user)
+See [API Guide: Sub](userinfo-api-guide.md#sub).
 
 ## Why can I get userinfo after the user has revoked consent?
 
-During a login or a payment session the user consent to share information if
+During a log-in or a payment session, the user can consent to share information if
 it's requested by the merchant. The user's information is then available for
 the merchant from the userinfo endpoint. For login sessions, user information
 is available for the ongoing login session.
@@ -55,13 +38,13 @@ Revoking consents will immediately affect future login and payment sessions.
 
 When the user consents to sharing information with the merchant, the merchant
 has 168 hours to retrieve the information
-The merchant must save this information and handle everything according to GDPR.  
+They must then save this information and handle everything according to GDPR.
 
-If the merchant needs an updated address for the user, the merchant must ask the
+If the merchant needs an updated address for the user, they must ask the
 user for a new consent.
 
 With the
-[Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/)
+[Login API](https://developer.vippsmobilepay.com/docs/APIs/login-api/),
 the merchant can retrieve updated information every time the user logs in.
 
 ## How can we detect users' consent removal?
@@ -69,8 +52,5 @@ the merchant can retrieve updated information every time the user logs in.
 Or: *How can our system dynamically "know/find out" if the user has revoked the consent
 for us to have access to his/her personal data in our system?*
 
-Your system can dynamically detect when a user's consent has been revoked by using *consent webhooks*.
-This is a system for notifying merchants when an end user revokes their consent.
-
-For the Login API, see
-[Login API guide: Consent webhooks](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/important-information#revoke-consent-webhook).
+Your system can dynamically detect when a user's consent has been revoked by using the
+[Login API's Consent webhooks](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/important-information#revoke-consent-webhook).

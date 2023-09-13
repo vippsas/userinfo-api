@@ -18,7 +18,7 @@ The API follows the
 [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
 
 To get access to user profile information, the merchant adds a `scope`
-parameter and initiates [specific API calls](#userinfo-call-by-call-guide).
+parameter and initiates [specific API calls](#call-by-call-guide-for-payment-flow).
 
 The user will be asked to consent to sharing the information from Vipps to the
 merchant as specified in the `scope`. If the user has not already consented to
@@ -65,6 +65,26 @@ The `scope` can include any of the values above, separated by a space. Examples:
 * `name birthDate`
 * `name email nin`
 
+## Sub
+
+The `sub` is a unique identifier for a Vipps MobilePay user and relates to that user's consent
+to share information with a specific sales unit.
+
+The `sub` is based on the user's national identity number ("fødselsnummer" in Norway),
+but is not a replacement for NIN (National Identity Number) or any other unique identifier
+for the user.
+
+A user may have more than one `sub` for the same merchant, but there can only be one `sub`
+per sales unit (Merchant Serial Number).
+You cannot combine the `sub` for one MSN and the API keys for a different MSN.
+
+The `sub` will not change if a user removes their consents, logs in again, and re-consents.
+
+**Please note:** There are some special cases where the `sub` will change for a user:
+
+* If a user deletes the Vipps or MobilePay profile and creates a new one.
+* If a user changes the phone number or creates a new user.
+
 ## Flows
 
 There are two main flows for getting user info:
@@ -72,19 +92,17 @@ There are two main flows for getting user info:
 * Through the payment APIs
 * Through the Login API
 
-
 ### Userinfo through payment APIs
 
 Through the following payment APIs, you can request the user's consent to share their information:
 
-   * ePayment API:
+* ePayment API:
      [`POST:/epayment/v1/payments`](https://developer.vippsmobilepay.com/api/epayment#tag/CreatePayments)
-   * Recurring API:
+* Recurring API:
      [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
-   * eCom API:
+* eCom API:
      [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST)
 
-     
 This is an illustration of a consent card and a payment screen.
 The user must complete both screens before the merchant can gain access to their profile information.
 It is not possible for the user to complete the payment without these steps.
@@ -223,15 +241,11 @@ for the standard headers that should be included.
    [Polling guidelines](https://developer.vippsmobilepay.com/docs/common-topics/polling-guidelines)
    for more recommendations.
 
-
-
 <details>
 <summary>Example request</summary>
 <div>
 
-
 This is an example based on the [Recurring API](https://developer.vippsmobilepay.com/docs/APIs/recurring-api/vipps-recurring-api#userinfo).
-
 
 See [HTTP headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers) for additional standard headers that should be included.
 
@@ -331,7 +345,6 @@ transaction and the fetching of the profile data.
 If you attempt to retrieve the user's information after 168 hours, you will
 get an error.
 
-
 <details>
 <summary>Example response after expiration</summary>
 <div>
@@ -355,7 +368,6 @@ after 168 hours, the response will not contain the user's information.
 
 </div>
 </details>
-
 
 ### Userinfo through Login API
 
