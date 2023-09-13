@@ -11,6 +11,10 @@ END_METADATA -->
 
 # Userinfo API
 
+![Vipps](./images/vipps.png) *Available for Vipps now.*
+
+![MobilePay](./images/mp.png) *Available for MobilePay in selected markets at MobilePay launch.*
+
 The Userinfo API allows merchants to request the user's profile information as part of the payment flow.
 This is also called "Profile Sharing".
 
