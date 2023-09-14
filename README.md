@@ -16,6 +16,11 @@ END_METADATA -->
 
 ![MobilePay](./images/mp.png) *Available for MobilePay in selected markets at the [Vipps MobilePay joint platform launch](https://www.vippsmobilepay.com/#about).*
 
+<!-- START_COMMENT -->
+ℹ️ Please use the website:
+[Vipps MobilePay Technical Documentation](https://developer.vippsmobilepay.com/docs/APIs/userinfo-api/).
+<!-- END_COMMENT -->
+
 Use the Userinfo API to get consent and access to data from your users.
 
 * [API quick start](userinfo-api-quick-start.md): Run the basic examples in curl or Postman.
