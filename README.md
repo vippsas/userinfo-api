@@ -14,7 +14,7 @@ END_METADATA -->
 
 ![Vipps](./images/vipps.png) *Available for Vipps now.*
 
-![MobilePay](./images/mp.png) *Available for MobilePay in selected markets at MobilePay launch.*
+![MobilePay](./images/mp.png) *Available for MobilePay in selected markets at the [Vipps MobilePay joint platform launch](https://www.vippsmobilepay.com/#about).*
 
 Use the Userinfo API to get consent and access to data from your users.
 
