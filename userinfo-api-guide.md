@@ -385,8 +385,8 @@ Provide the access token retrieved during the login session.
 curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/ \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
--H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
--H "Merchant-Serial-Number: 123456" \
+-H "Ocp-Apim-Subscription-Key: YOUR-SUBSCRIPTION-KEY" \
+-H "Merchant-Serial-Number: YOUR-MSN" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \

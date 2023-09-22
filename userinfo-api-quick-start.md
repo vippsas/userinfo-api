@@ -16,23 +16,33 @@ import TabItem from '@theme/TabItem';
 
 # Quick start
 
-## Before you begin
-
-This document covers the quick steps for getting started with the Userinfo API.
-You must have already signed up as an organization with Vipps MobilePay and have
-your test credentials from the merchant portal, as described in the
-[Getting started guide](https://developer.vippsmobilepay.com/docs/getting-started).
-
-**Important:** The examples use standard example values that you must change to
-use *your* values. This includes API keys, HTTP headers, reference, etc.
-
 This example is for the [payment flow](userinfo-api-guide.md#userinfo-through-payment-apis)
 using the ePayment API, but it can be applied to the Recurring and eCom APIs.
 
-To see a quick start for the login flow, see the [Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-quick-start/).
+To see a quick start for the login flow, see the
+[Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-quick-start/).
 
+## Before you begin
+
+The examples use standard example values that you must change to
+use *your* values. This includes API keys, HTTP headers, reference, etc.
+Note that any currency amount must be an Integer value minimum 100 in øre.
+
+## Your first user info
 
 ### Step 1 - Setup
+
+You must have already signed up as an organization with Vipps MobilePay and have
+your test credentials from the merchant portal.
+
+You will need the following values, as described in the
+[Getting started guide](https://developer.vippsmobilepay.com/docs/getting-started):
+
+* `client_id` - Client_id for a test sales unit.
+* `client_secret` - Client_id for a test sales unit.
+* `Ocp-Apim-Subscription-Key` - Subscription key for a test sales unit.
+* `merchantSerialNumber` - The unique ID for a test sales unit.
+* `internationalMobileNumber` - The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
 
 <Tabs
 defaultValue="curl"
@@ -43,27 +53,20 @@ values={[
 ]}>
 <TabItem value="postman">
 
-**Please note:** To prevent your sensitive data and credentials from being synced to the Postman cloud,
-store them in the *Current Value* fields of your Postman environment.
-
 In Postman, import the following files:
 
 * [Userinfo API Postman collection](/tools/userinfo-api-postman-collection.json)
 * [Global Postman environment](https://github.com/vippsas/vipps-developers/blob/master/tools/vipps-api-global-postman-environment.json)
 
-Update the *Current Value* field in your Postman environment with your own values (see
-[API keys](https://developer.vippsmobilepay.com/docs/common-topics/api-keys/)):
+🔥 **Do not use production keys in Postman.** 🔥
 
-* `client_id` - Merchant key required for getting the access token.
-* `client_secret` - Merchant key required for getting the access token.
-* `Ocp-Apim-Subscription-Key` - Merchant subscription key.
-* `merchantSerialNumber` - Merchant ID.
-* `internationalMobileNumber` - The MSISDN for the test app profile you have received or registered. This is your test mobile number *including* country code.
+Update the *Current Value* field in your Postman environment with your **Merchant Test** keys.
+Use *Current Value* field for added security, as these values are not synced to the cloud.
 
 </TabItem>
 <TabItem value="curl">
 
-No setup needed :)
+No additional setup needed :)
 
 </TabItem>
 </Tabs>
@@ -96,7 +99,7 @@ curl https://apitest.vipps.no/accessToken/get \
 -H "client_id: YOUR-CLIENT-ID" \
 -H "client_secret: YOUR-CLIENT-SECRET" \
 -H "Ocp-Apim-Subscription-Key: YOUR-SUBSCRIPTION-KEY" \
--H "Merchant-Serial-Number: 123456" \
+-H "Merchant-Serial-Number: YOUR-MSN" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
@@ -135,7 +138,7 @@ curl https://apitest.vipps.no/epayment/v1/payments \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
 -H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
--H "Merchant-Serial-Number: 123456" \
+-H "Merchant-Serial-Number: YOUR-MSN" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
@@ -201,7 +204,7 @@ curl https://apitest.vipps.no/epayment/v1/payments/UNIQUE-PAYMENT-REFERENCE \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
 -H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
--H "Merchant-Serial-Number: 123456" \
+-H "Merchant-Serial-Number: YOUR-MSN" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
@@ -237,7 +240,7 @@ curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/{sub} \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1Ni <truncated>" \
 -H "Ocp-Apim-Subscription-Key: 0f14ebcab0ec4b29ae0cb90d91b4a84a" \
--H "Merchant-Serial-Number: 123456" \
+-H "Merchant-Serial-Number: YOUR-MSN" \
 -H "Vipps-System-Name: acme" \
 -H "Vipps-System-Version: 3.1.2" \
 -H "Vipps-System-Plugin-Name: acme-webshop" \
