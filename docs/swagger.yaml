@@ -5,7 +5,7 @@ info:
     This follows the [OIDC Standard: UserInfo endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
     See the [Userinfo API guide](https://developer.vippsmobilepay.com/docs/APIs/userinfo-api) for a description.
   version: 2.0.3
-  title: Vipps Userinfo API
+  title: Userinfo API
 servers:
   - url: https://api.vipps.no
     description: Production environment (uses the production API keys, the official app and live data)
