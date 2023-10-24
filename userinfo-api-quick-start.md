@@ -115,7 +115,7 @@ The property `access_token` should be used for all other API requests in the `Au
 
 ### Step 3 - Request a simple payment with profile flow
 
-Provide the `scope` object in the [`POST:/payments`][create-payment-endpoint] call. This contains the information types that you want access to, separated by spaces (e.g., "name address email phoneNumber birthDate").
+Provide the `scope` object in the [`POST:/epayment/v1/payments`][create-payment-endpoint] call. This contains the information types that you want access to, separated by spaces (e.g., "name address email phoneNumber birthDate").
 
 <Tabs
 defaultValue="curl"
@@ -179,7 +179,7 @@ You will be presented with the payment in the app, where you can complete the pa
 
 ### Step 5 - Get the sub for the payment
 
-Call the [`GET:/payments/{reference}`][get-payment-endpoint] endpoint.
+Call the [`GET:/epayment/v1/payments/{reference}`][get-payment-endpoint] endpoint.
 The unique identifier, `sub`, can be retrieved in the payment details under `profile`.
 
 
