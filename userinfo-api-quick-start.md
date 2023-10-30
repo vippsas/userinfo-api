@@ -172,7 +172,7 @@ curl https://apitest.vipps.no/epayment/v1/payments \
 ### Step 4 - Complete the payment
 
 Open the `redirectUrl` link that is returned, and it will take you to the
-[landing page](https://developer.vippsmobilepay.com/docs/common-topics/landing-page/).
+[landing page](https://developer.vippsmobilepay.com/docs/knowledge-base/landing-page/).
 The phone number of your test user should already be filled in, so you only have to click *Next*.
 
 You will be presented with the payment in the app, where you can complete the payment.

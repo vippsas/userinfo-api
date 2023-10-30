@@ -144,7 +144,7 @@ sequenceDiagram
 Scenario: Complete a payment and get the user's name and phone number.
 
 See
-[HTTP headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers)
+[HTTP headers](https://developer.vippsmobilepay.com/docs/knowledge-base/http-headers)
 for the standard headers that should be included.
 
 1. Retrieve the access token with
@@ -242,7 +242,7 @@ for the standard headers that should be included.
    **Please note:** The `sub` is added asynchronously, so if the API request in (5)
    above is made within (milli)seconds of the payment approval in the app, it may
    not be available. If that happens, simply make another request. See
-   [Polling guidelines](https://developer.vippsmobilepay.com/docs/common-topics/polling-guidelines)
+   [Polling guidelines](https://developer.vippsmobilepay.com/docs/knowledge-base/polling-guidelines)
    for more recommendations.
 
 <details>
@@ -251,7 +251,7 @@ for the standard headers that should be included.
 
 This is an example based on the [Recurring API](https://developer.vippsmobilepay.com/docs/APIs/recurring-api/vipps-recurring-api#userinfo).
 
-See [HTTP headers](https://developer.vippsmobilepay.com/docs/common-topics/http-headers) for additional standard headers that should be included.
+See [HTTP headers](https://developer.vippsmobilepay.com/docs/knowledge-base/http-headers) for additional standard headers that should be included.
 
 To request the `scope`, add the scope to the initial
 [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
