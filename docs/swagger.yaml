@@ -71,7 +71,7 @@ paths:
       summary: Get Userinfo in the Login API flow
       description: >-
         This endpoint is only for use in the
-        [Login API in browser flow](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/integration#userinfo).
+        [Login API: Integrate from a website](https://developer.vippsmobilepay.com/docs/APIs/login-api/api-guide/browser-flow-integration/#userinfo).
         It returns the payload with the information that the user has consented to share.
         Find more info on the `/userinfo` endpoint at the
         [OIDC Standard](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
