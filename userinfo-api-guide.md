@@ -105,7 +105,7 @@ Through the following payment APIs, you can request the user's consent to share 
 * Recurring API:
      [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
 * eCom API:
-     [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST)
+     [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/eCom-API/operation/initiatePaymentV3UsingPOST)
 
 This is an illustration of a consent card and a payment screen.
 The user must complete both screens before the merchant can gain access to their profile information.
@@ -196,7 +196,7 @@ for the standard headers that should be included.
    * Recurring API:
      [`POST:/recurring/agreements`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/DraftAgreementV3)
    * eCom API:
-     [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/initiatePaymentV3UsingPOST)
+     [`POST:/ecomm/v2/payments`](https://developer.vippsmobilepay.com/api/ecom#tag/eCom-API/operation/initiatePaymentV3UsingPOST)
 
 4. The user consents to the information sharing and completes the payment in Vipps.
 
@@ -220,7 +220,7 @@ for the standard headers that should be included.
    * Recurring API:
      [`GET:/recurring/agreements/{agreementId}`](https://developer.vippsmobilepay.com/api/recurring#tag/Agreement-v3-endpoints/operation/FetchAgreementV3)
    * eCom API:
-     [`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/integrationTestApprovePayment)
+     [`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/eCom-API/operation/integrationTestApprovePayment)
 
 6. To retrieve the user's information, call
    [`GET:/vipps-userinfo-api/userinfo/{sub}`](https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo)
@@ -356,7 +356,7 @@ get an error.
 If you use the
 [eCom API](https://developer.vippsmobilepay.com/docs/APIs/ecom-api)
 and
-[`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/Vipps-eCom-API/operation/getPaymentDetailsUsingGET)
+[`GET:/ecomm/v2/payments/{orderId}/details`](https://developer.vippsmobilepay.com/api/ecom#tag/eCom-API/operation/getPaymentDetailsUsingGET)
 after 168 hours, the response will not contain the user's information.
 
 ```json
