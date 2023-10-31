@@ -20,7 +20,7 @@ This example is for the [payment flow](userinfo-api-guide.md#userinfo-through-pa
 using the ePayment API, but it can be applied to the Recurring and eCom APIs.
 
 To see a quick start for the login flow, see the
-[Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-quick-start/).
+[Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/login-api-quick-start/).
 
 ## Before you begin
 

@@ -58,7 +58,7 @@ The `scope` determines what information the user is asked to share.
 | `email`          | Email address. The flag `email_verified : true` (or `false`) in the response indicates whether the email address is verified. | yes |
 | `name`           | First, middle and given name. Verified with the National Population Register. | yes |
 | `phoneNumber`    | Phone number. Verified when creating the Vipps account. MSISDN format (4791234567).| yes |
-| `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
+| `nin`            | Norwegian national identity number. Verified with BankID. **NB:** Merchants need to apply for access to NIN. See: [Who can get access to NIN and how?](https://developer.vippsmobilepay.com/docs/APIs/login-api/login-api-faq.md#who-can-get-access-to-nin-and-how)    | yes |
 
 The `scope` can include any of the values above, separated by a space. Examples:
 
@@ -394,4 +394,4 @@ curl https://apitest.vipps.no/vipps-userinfo-api/userinfo/ \
 -X GET
 ```
 
-To see the full login flow, see the [Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/vipps-login-api-quick-start/).
+To see the full login flow, see the [Login API Quick start guide](https://developer.vippsmobilepay.com/docs/APIs/login-api/login-api-quick-start/).
