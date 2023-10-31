@@ -249,7 +249,7 @@ for the standard headers that should be included.
 <summary>Example request</summary>
 <div>
 
-This is an example based on the [Recurring API](https://developer.vippsmobilepay.com/docs/APIs/recurring-api/vipps-recurring-api#userinfo).
+This is an example based on the [Recurring API](https://developer.vippsmobilepay.com/docs/APIs/recurring-api/recurring-api-guide#userinfo).
 
 See [HTTP headers](https://developer.vippsmobilepay.com/docs/knowledge-base/http-headers) for additional standard headers that should be included.
 
