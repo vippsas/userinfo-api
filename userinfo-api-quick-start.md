@@ -56,7 +56,7 @@ values={[
 In Postman, import the following files:
 
 * [Userinfo API Postman collection](/tools/userinfo-api-postman-collection.json)
-* [Global Postman environment](https://github.com/vippsas/vipps-developers/blob/master/tools/vipps-api-global-postman-environment.json)
+* [Global Postman environment](https://github.com/vippsas/vipps-developers/blob/master/tools/global-postman-environment.json)
 
 🔥 **To reduce risk of exposure, never store production keys in Postman or any similar tools.** 🔥
 
